@@ -51,7 +51,6 @@ const CallToAction = styled(motion.a)`
 `;
 
 function Hero() {
-  const theme = useTheme();
 
   return (
     <HeroSection id="hero">
