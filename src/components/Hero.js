@@ -3,37 +3,47 @@ import styled, { useTheme } from 'styled-components';
 import { motion } from 'framer-motion';
 
 const HeroSection = styled.section`
-  /* Styles for hero section */
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
   padding: 0 20px;
+  background-color: #0a192f;
 `;
 
 const Title = styled(motion.h1)`
-  font-size: 2.5rem;
+  font-size: 3em;
   color: ${({ theme }) => theme.colors.text};
 
   span {
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  @media (max-width: 768px) {
+    font-size: 2.5em;
+  }
 `;
 
 const Subtitle = styled(motion.p)`
-  font-size: 1.5rem;
+  font-size: 1.5em;
   margin-top: 20px;
   color: ${({ theme }) => theme.colors.accent};
+  max-width: 600px;
+
+  @media (max-width: 768px) {
+    font-size: 1.2em;
+  }
 `;
 
 const CallToAction = styled(motion.a)`
   margin-top: 40px;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: #fff;
+  color: #0a192f;
   border-radius: 5px;
   display: inline-block;
   cursor: pointer;
+  font-weight: bold;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.accent};
@@ -44,7 +54,7 @@ function Hero() {
   const theme = useTheme();
 
   return (
-    <HeroSection>
+    <HeroSection id="hero">
       <Title initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         Hi, I'm <span>Amir Khalifa</span>
       </Title>
