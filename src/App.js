@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom'; // Removed unused imports
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './components/styles/GlobalStyles';
 import { theme } from './components/styles/Theme';
@@ -14,7 +15,8 @@ import Footer from './components/Footer';
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <Router>
+        {/* Removed the fragment since Router can only have one child */}
         <GlobalStyle />
         <Header />
         <main>
@@ -26,7 +28,7 @@ function App() {
           <Contact />
         </main>
         <Footer />
-      </>
+      </Router>
     </ThemeProvider>
   );
 }
