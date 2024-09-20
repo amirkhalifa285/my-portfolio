@@ -16,7 +16,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        {/* Removed the fragment since Router can only have one child */}
+        {}
         <GlobalStyle />
         <Header />
         <main>

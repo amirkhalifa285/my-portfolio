@@ -35,7 +35,7 @@ function Contact() {
                 <a href="mailto:amir.kh28@hotmail.com">amir.kh28@hotmail.com</a>
             </ContactInfo>
             <ContactInfo>
-                <FontAwesomeIcon icon={faPhone} /> Phone: <a href="tel:+970546773232">0546773232</a>
+                <FontAwesomeIcon icon={faPhone} /> Phone: <a href="tel:+9720546773232">0546773232</a>
             </ContactInfo>
             <ContactInfo>
                 <FontAwesomeIcon icon={faLinkedin} /> LinkedIn:{' '}

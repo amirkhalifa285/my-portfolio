@@ -80,7 +80,7 @@ function Experience() {
       <Job>
         <h3>Israel Standardization Institute</h3>
         <p>
-          <strong>Gold Department IT, Tel Aviv</strong> | <em>May 2023 - Sep 2023</em>
+          <strong>Gold Department IT, Tel Aviv</strong> | <em>May 2023 - Aug 2024</em>
         </p>
         <ul>
           <li>
