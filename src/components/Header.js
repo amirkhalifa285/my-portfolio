@@ -68,7 +68,19 @@ const NavLink = styled.a`
   }
 `;
 
-function Header() {
+const ThemeToggleButton = styled.button`
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  font-size: 1.2em;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.accent};
+  }
+`;
+
+function Header({ toggleTheme, isDarkMode }) {
   return (
     <Nav>
       <a href="#hero">
@@ -81,6 +93,9 @@ function Header() {
         <NavLink href="#projects">Projects</NavLink>
         <NavLink href="#skills">Skills</NavLink>
         <NavLink href="#contact">Contact</NavLink>
+        <ThemeToggleButton onClick={toggleTheme}>
+          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        </ThemeToggleButton>
       </NavLinks>
     </Nav>
   );

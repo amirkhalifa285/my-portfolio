@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom'; // Removed unused imports
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './components/styles/GlobalStyles';
-import { theme } from './components/styles/Theme';
+import { lightTheme, darkTheme } from './components/styles/Theme';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,12 +13,16 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <Router>
-        {}
         <GlobalStyle />
-        <Header />
+        <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
         <main>
           <Hero />
           <About />
