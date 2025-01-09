@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom'; // Removed unused imports
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './components/styles/GlobalStyles';
@@ -11,13 +11,10 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import TagManager from 'react-gtag';
+
 
 
 function App() {
-  useEffect(() => {
-    TagManager.initialize({ gtagId: 'G-T8268NX4NE' });
-  }, []);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   const toggleTheme = () => {
