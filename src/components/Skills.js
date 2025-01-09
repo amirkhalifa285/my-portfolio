@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 const SkillsSection = styled.section`
   padding: 80px 20px;
-  background-color: #0a192f;
-  color: #ccd6f6;
+  color: ${({ theme }) => theme.colors.background};
+  transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,16 +19,17 @@ const SkillsContainer = styled.div`
 `;
 
 const SkillCategory = styled.div`
-  background-color: #112240;
+  background-color: ${({ theme }) => theme.colors.background}; /* Dynamic background */
   border-radius: 8px;
   padding: 20px;
   width: 250px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px${({ theme }) => theme.colors.primary}; /* This can remain unchanged */
 
   h3 {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.primary}; /* Dynamic primary color */
     margin-bottom: 15px;
     text-align: center;
+    transition: color 0.3s ease; /* Smooth transition for theme toggle */
   }
 
   ul {
@@ -38,11 +39,15 @@ const SkillCategory = styled.div`
     li {
       margin-bottom: 10px;
       line-height: 1.6;
-      color: #ccd6f6;
+      color: ${({ theme }) => theme.colors.text}; /* Dynamic text color */
       text-align: center;
+      transition: color 0.3s ease; /* Smooth transition for text color */
     }
   }
+
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth background transition */
 `;
+
 
 function Skills() {
   return (

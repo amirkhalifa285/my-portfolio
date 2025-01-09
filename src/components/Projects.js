@@ -4,20 +4,24 @@ import { FaGithub } from 'react-icons/fa';
 
 const ProjectsSection = styled.section`
   padding: 80px 20px;
-  background-color: #0a192f;
-  color: #ccd6f6;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.background};
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 const Project = styled.div`
   margin-bottom: 40px;
 
   h3 {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.primary};
+    transition: background-color 0.3s ease, color 0.3s ease;
     margin-bottom: 5px;
   }
 
   p {
-    color: #8892b0;
+    color: ${({ theme }) => theme.colors.background};
+    transition: background-color 0.3s ease, color 0.3s ease;
     margin-bottom: 10px;
   }
 
@@ -36,7 +40,8 @@ const Project = styled.div`
   }
 
   .project-link {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.background};
+    transition: background-color 0.3s ease, color 0.3s ease;
     text-decoration: none;
     display: inline-flex;
     align-items: center;

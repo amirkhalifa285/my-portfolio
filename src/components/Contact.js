@@ -12,8 +12,9 @@ import {
 
 const ContactSection = styled.section`
   padding: 80px 20px;
-  background-color: #0a192f;
-  color: #ccd6f6;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  transition: background-color 0.3s ease, color 0.3s ease;
   text-align: center;
 `;
 
@@ -22,7 +23,8 @@ const ContactInfo = styled.p`
   margin-bottom: 20px;
 
   a {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.primary};
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 `;
 

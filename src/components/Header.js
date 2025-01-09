@@ -6,7 +6,9 @@ const Nav = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: #0a192f;
+  background-color: ${({ theme }) => theme.colors.background}; /* Dynamic background */
+  color: ${({ theme }) => theme.colors.text}; /* Dynamic text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
   display: flex;
   align-items: center; /* Vertically center the items */
   justify-content: space-between; /* Space between logo and nav links */
@@ -40,14 +42,15 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled.a`
-  color: #ccd6f6;
+  color: ${({ theme }) => theme.colors.text}; /* Dynamic text color */
   margin: 0 15px;
   font-size: 1.1em;
   text-decoration: none;
   position: relative;
+  transition: color 0.3s ease; /* Smooth transitions */
 
   &:hover {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.primary}; /* Dynamic hover color */
   }
 
   &:after {
@@ -55,7 +58,7 @@ const NavLink = styled.a`
     display: block;
     width: 0%;
     height: 2px;
-    background: #64ffda;
+    background: ${({ theme }) => theme.colors.primary}; /* Dynamic underline color */
     transition: width 0.3s;
   }
 
@@ -71,12 +74,13 @@ const NavLink = styled.a`
 const ThemeToggleButton = styled.button`
   background: none;
   border: none;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary}; /* Dynamic button color */
   cursor: pointer;
   font-size: 1.2em;
+  transition: color 0.3s ease; /* Smooth transitions */
 
   &:hover {
-    color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.accent}; /* Dynamic hover color */
   }
 `;
 

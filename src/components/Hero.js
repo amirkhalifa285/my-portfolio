@@ -8,7 +8,9 @@ const HeroSection = styled.section`
   justify-content: center;
   min-height: 100vh;
   padding: 0 20px;
-  background-color: #0a192f;
+  background-color: ${({ theme }) => theme.colors.background}; /* Dynamic background */
+  color: ${({ theme }) => theme.colors.text}; /* Dynamic text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 `;
 
 const Title = styled(motion.h1)`
@@ -39,11 +41,13 @@ const CallToAction = styled(motion.a)`
   margin-top: 40px;
   padding: 12px 24px;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: #0a192f;
+  color: ${({ theme }) => theme.colors.background}; /* Dynamic button text color */
   border-radius: 5px;
   display: inline-block;
   cursor: pointer;
   font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.accent};
@@ -51,7 +55,6 @@ const CallToAction = styled(motion.a)`
 `;
 
 function Hero() {
-
   return (
     <HeroSection id="hero">
       <Title initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

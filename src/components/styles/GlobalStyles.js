@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     font-family: ${({ theme }) => theme.fonts.main};
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
   }
 
   h1, h2, h3, h4 {
@@ -26,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
   p, li {
     font-size: 1.1em;
     line-height: 1.6;
+    color: ${({ theme }) => theme.colors.text}; /* Ensure paragraphs and lists use text color */
   }
 
   a {
@@ -39,6 +41,9 @@ const GlobalStyle = createGlobalStyle`
 
   section {
     padding: 80px 20px;
+    background-color: ${({ theme }) => theme.colors.background}; /* Ensures sections follow theme */
+    color: ${({ theme }) => theme.colors.text};
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   @media (max-width: 768px) {

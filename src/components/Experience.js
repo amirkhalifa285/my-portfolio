@@ -3,21 +3,24 @@ import styled from 'styled-components';
 
 const ExperienceSection = styled.section`
   padding: 80px 20px;
-  background-color: #0a192f;
-  color: #ccd6f6;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 const Job = styled.div`
   margin-bottom: 40px;
 
   h3 {
-    color: #64ffda;
+    color: ${({ theme }) => theme.colors.primary}; /* Dynamic primary color */
     margin-bottom: 5px;
+    transition: color 0.3s ease; /* Smooth transition for color changes */
   }
 
   p {
-    color: #8892b0;
+    color: ${({ theme }) => theme.colors.accent}; /* Dynamic accent color */
     margin-bottom: 10px;
+    transition: color 0.3s ease; /* Smooth transition for color changes */
   }
 
   ul {
