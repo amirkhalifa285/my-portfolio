@@ -53,7 +53,11 @@ const Project = styled.div`
 
     svg {
       margin-right: 5px;
-    }
+      color: ${({ theme }) => theme.colors.text}; /* or any other visible color */
+      font-size: 1.5em; /* Adjust the size as needed */
+      }
+      
+
   }
 `;
 
