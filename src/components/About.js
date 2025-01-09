@@ -19,10 +19,9 @@ function About() {
     <AboutSection id="about">
       <h2>About Me</h2>
       <AboutText>
-        I am a disciplined and honest individual with a passion for analytical challenges. I thrive in intellectually
-        stimulating environments and am committed to delivering high-quality results while embracing new growth
-        opportunities. I manage my responsibilities and time with precision, and I am confident in my ability to
-        contribute meaningfully to any team, ensuring its continued success.
+        Motivated software engineering student with a specialty in full-stack development and cybersecurity, 
+        able to solve complex problems with creative solutions. Strong proficiency in database management and network operations. 
+        Looking to apply both analytical and technical skills as part of a dynamic team.
       </AboutText>
     </AboutSection>
   );

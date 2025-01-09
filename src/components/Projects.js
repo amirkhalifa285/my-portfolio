@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaGithub } from 'react-icons/fa'; 
+import { FaGithub } from 'react-icons/fa';
 
 const ProjectsSection = styled.section`
   padding: 80px 20px;
@@ -108,6 +108,53 @@ function Projects() {
         <div className="project-links">
           <a
             href="https://github.com/amirkhalifa285/drinkSmart"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-link"
+          >
+            <FaGithub /> View Repository
+          </a>
+        </div>
+      </Project>
+      { /* project 3 */}
+      <Project>
+        <h3>FlyEase Application</h3>
+        <p>
+          <em>Present</em>
+        </p>
+        <ul>
+          <li>Designed and implemented a mock airport navigation system with features for location-based navigation and congestion visualization.</li>
+          <li>
+            Developed a backend API using FastAPI with endpoints for managing locations, paths, and dynamic navigation.
+          </li>
+          <li>
+            Utilized Dijkstra's algorithm to compute the shortest path between airport locations based on real-time user input.
+          </li>
+          <li>
+            Created a fully interactive front-end map using React and Fabric.js, supporting dynamic visualization of paths, congestion levels, and highlighted navigation routes.
+          </li>
+          <li>
+            Designed a responsive UI with CSS for seamless user interaction across various devices.
+          </li>
+          <li>
+            Implemented an admin panel for managing map entities such as locations and paths.
+          </li>
+          <li>
+            Integrated asynchronous database operations with SQLAlchemy to handle real-time data updates efficiently.
+          </li>
+          <li>
+            Deployed a congestion monitoring system to display real-time congestion levels using visual indicators on the map.
+          </li>
+          <li>
+            Established a modular structure for scalability and maintainability, incorporating reusable components and controllers.
+          </li>
+          <li>
+            <strong>Technologies:</strong> Python (FastAPI), JavaScript (React, Fabric.js), SQLAlchemy, CSS, AsyncIO
+          </li>
+        </ul>
+        <div className="project-links">
+          <a
+            href="https://github.com/amirkhalifa285/FlyEase-Backend"
             target="_blank"
             rel="noopener noreferrer"
             className="project-link"

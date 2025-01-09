@@ -44,7 +44,7 @@ function Experience() {
         </p>
         <ul>
           <li>
-            Monitored Video Platform Services using Opsview and Dynatrace to ensure optimal performance and uptime.
+            Monitored Opsview, Dynatrace, and Zabbix services while achieving 99.9% uptime at the Pingdom platform.
           </li>
           <li>
             Managed AWS Cloud Resources, performing server resets and maintenance tasks within Amazon Web Services environments.
@@ -65,9 +65,6 @@ function Experience() {
             Implemented monitoring strategies to proactively detect and address potential system vulnerabilities.
           </li>
           <li>
-            Participated in 24/7 on-call rotation to provide immediate support for critical system alerts.
-          </li>
-          <li>
             Analyzed system logs and metrics to identify trends and prevent future incidents.
           </li>
           <li>
@@ -84,7 +81,7 @@ function Experience() {
         </p>
         <ul>
           <li>
-            Handled technical issues with laboratory equipment within the department.
+            Handled technical issues with laboratory and office equipment within the department.
           </li>
           <li>
             Calculated net weight of gold processed, ensuring 100% accuracy through precise measurements and verification processes.
