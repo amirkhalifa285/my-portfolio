@@ -12,10 +12,10 @@ export const darkTheme = {
 
 export const lightTheme = {
   colors: {
-    background: '#ffffff',
-    primary: '#0a192f',
-    text: '#333333',
-    accent: '#555555',
+    background: '#f9f9f9', // light background color
+    primary: '#007acc', //  blue 
+    text: '#333333', // Darker text color 
+    accent: '#666666', // soft gray 
   },
   fonts: {
     main: 'Roboto, sans-serif',
