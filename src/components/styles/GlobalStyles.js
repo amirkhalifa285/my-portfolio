@@ -54,6 +54,9 @@ const GlobalStyle = createGlobalStyle`
     h2 {
       font-size: 2em;
     }
+    body {
+    padding-top: 70px; 
+    }
   }
 `;
 
