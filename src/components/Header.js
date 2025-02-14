@@ -25,6 +25,16 @@ const Logo = styled.img`
   height: 50px;
   width: auto;
   cursor: pointer;
+  animation: spin 20s linear infinite;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const NavLinks = styled.div`
@@ -71,6 +81,24 @@ const HamburgerIcon = styled.div`
   }
 `;
 
+const ThemeToggleButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary}; /* Primary theme color */
+  color: ${({ theme }) => theme.colors.background}; /* Contrast text color */
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accent}; /* Slight hover effect */
+  }
+`;
+
 function Header({ toggleTheme, isDarkMode }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -89,9 +117,9 @@ function Header({ toggleTheme, isDarkMode }) {
         <NavLink href="#projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
         <NavLink href="#skills" onClick={() => setMenuOpen(false)}>Skills</NavLink>
         <NavLink href="#contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
-        <NavLink as="button" onClick={() => { toggleTheme(); setMenuOpen(false); }}>
-          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-        </NavLink>
+        <ThemeToggleButton onClick={toggleTheme}>
+          {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
+        </ThemeToggleButton>
       </NavLinks>
     </Nav>
   );

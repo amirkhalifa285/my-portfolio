@@ -43,7 +43,7 @@ function Experience() {
       <Job>
         <h3>CoolVision</h3>
         <p>
-          <strong>Network Operations Center (NOC) Engineer</strong> | <em>Aug 2024 - Present</em>
+          <strong>Network Operations Center (NOC) Engineer</strong> | <em>Aug 2024 - Feb 2025</em>
         </p>
         <ul>
           <li>
