@@ -255,8 +255,8 @@ function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Generate URL for QR code
-  const contactUrl = `${window.location.origin}#contact`;
+  // Change this line in Contact.js:
+  const contactUrl = `mailto:amir.kh28@hotmail.com?subject=Portfolio%20Inquiry`;
 
   const validateForm = () => {
     const newErrors = {};
