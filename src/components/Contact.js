@@ -233,6 +233,16 @@ const SuccessMessage = styled.div`
   font-weight: 600;
 `;
 
+const ApiErrorMessage = styled.div`
+  padding: 15px;
+  background-color: #ff6b6b;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+`;
+
 function Contact() {
   const [formData, setFormData] = useState({
     name: '',
@@ -302,23 +312,41 @@ function Contact() {
     
     setIsSubmitting(true);
     
-    // Simulate form submission (will connect to AWS later)
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
-      setShowSuccess(true);
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+    try {
+      const response = await fetch('https://dddj5rowmf.execute-api.eu-west-1.amazonaws.com/prod/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setShowSuccess(true);
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 5000);
+      } else {
+        // Handle error response
+        console.error('Error:', data);
+        setErrors({ submit: data.error || 'Failed to send message. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      setErrors({ submit: 'Network error. Please check your connection and try again.' });
+    } finally {
       setIsSubmitting(false);
-      
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 5000);
-    }, 1000);
+    }
   };
 
   return (
@@ -373,6 +401,12 @@ function Contact() {
                 <SuccessMessage>
                   Thank you for your message! I'll get back to you soon.
                 </SuccessMessage>
+              )}
+              
+              {errors.submit && (
+                <ApiErrorMessage>
+                  {errors.submit}
+                </ApiErrorMessage>
               )}
               
               <FormGrid>
