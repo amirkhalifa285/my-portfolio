@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import profilePicture from '../assets/profile_pic.jpeg';
+import profilePicture from '../assets/profile_pic.jpg';
 
 const HeroSection = styled.section`
   display: flex;
