@@ -37,9 +37,9 @@ function About() {
       <AboutContent>
         <Title>About Me</Title>
         <Paragraph>
-          Motivated software engineering student with a specialty in full-stack development and cybersecurity,
-          able to solve complex problems with creative solutions. Strong proficiency in database management
-          and network operations. Looking to apply both analytical and technical skills as part of a dynamic team.
+          I am a 4th year software engineering student with an academic specialty in full-stack development and cybersecurity,
+          aspiring to become a DevOps engineer, with passion towards cloud computing. I am a part time trader and investor in cryptocurrencies and stocks
+          with an experience of 3 years and counting in the market.
         </Paragraph>
       </AboutContent>
     </AboutSection>
