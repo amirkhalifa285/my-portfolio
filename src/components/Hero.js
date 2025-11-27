@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import profilePicture from '../assets/profile_picture.png'; // Change to .png for transparency
+import profilePicture from '../assets/profile_picture.png';
+import Button from './ui/Button';
 
 const HeroSection = styled.section`
   display: flex;
@@ -9,128 +10,54 @@ const HeroSection = styled.section`
   justify-content: center;
   min-height: 100vh;
   padding: 0 20px;
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: radial-gradient(circle at 50% 50%, ${({ theme }) => theme.colors.primary}10 0%, transparent 50%);
 `;
 
 const HeroContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 40px;
+  justify-content: space-between;
+  gap: 60px;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 60px;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    justify-content: center;
-    gap: 40px;
+  @media (max-width: 968px) {
+    flex-direction: column-reverse;
     text-align: center;
-    padding: 0 20px;
-  }
-`;
-
-const ProfileImageWrapper = styled(motion.div)`
-  flex-shrink: 0;
-  position: relative;
-`;
-
-const ProfileImage = styled.img`
-  width: 350px;
-  height: auto;
-  max-height: 450px;
-  object-fit: contain;
-  object-position: center top;
-  filter: drop-shadow(0 0 30px rgba(100, 255, 218, 0.4));
-  transition: filter 0.3s ease;
-
-  /* Subtle circular glow effect behind the image */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(
-      circle,
-      rgba(100, 255, 218, 0.1) 0%,
-      rgba(100, 255, 218, 0.05) 40%,
-      transparent 70%
-    );
-    border-radius: 50%;
-    z-index: -1;
-    animation: pulseGlow 3s ease-in-out infinite alternate;
-  }
-
-  &:hover {
-    filter: drop-shadow(0 0 40px rgba(100, 255, 218, 0.6));
-  }
-
-  @media (max-width: 768px) {
-    width: 280px;
-    max-height: 360px;
-  }
-
-  @media (max-width: 480px) {
-    width: 240px;
-    max-height: 300px;
-  }
-`;
-
-// Alternative approach with a background glow element
-const GlowBackground = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(
-    circle,
-    rgba(100, 255, 218, 0.15) 0%,
-    rgba(100, 255, 218, 0.08) 30%,
-    rgba(100, 255, 218, 0.03) 50%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  z-index: -1;
-  animation: pulseGlow 4s ease-in-out infinite alternate;
-
-  @media (max-width: 768px) {
-    width: 250px;
-    height: 250px;
+    justify-content: center;
   }
 `;
 
 const HeroContent = styled.div`
-  text-align: left;
+  flex: 1;
   
-  @media (max-width: 768px) {
+  @media (max-width: 968px) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 `;
 
+const Greeting = styled(motion.p)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 1.2em;
+  font-weight: 600;
+  margin-bottom: 20px;
+`;
+
 const Title = styled(motion.h1)`
-  font-size: 3em;
+  font-size: 4em;
   color: ${({ theme }) => theme.colors.text};
   margin: 0 0 20px 0;
-  text-align: left;
+  line-height: 1.1;
 
   span {
     color: ${({ theme }) => theme.colors.primary};
-    text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
   }
 
   @media (max-width: 768px) {
-    font-size: 2.5em;
+    font-size: 3em;
   }
 `;
 
@@ -146,90 +73,103 @@ const Subtitle = styled(motion.p)`
   }
 `;
 
-const CallToAction = styled(motion.a)`
-  margin-top: 0;
-  padding: 12px 24px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.background};
-  border-radius: 5px;
-  display: inline-block;
-  cursor: pointer;
-  font-weight: bold;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.2);
+const ButtonGroup = styled(motion.div)`
+  display: flex;
+  gap: 20px;
+`;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.accent};
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(100, 255, 218, 0.3);
+const ProfileImageWrapper = styled(motion.div)`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+
+const ProfileImage = styled.img`
+  width: 400px;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px ${({ theme }) => theme.colors.primary}40);
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    width: 280px;
   }
 `;
 
-// Keyframe animation for the glow effect
-const GlobalStyles = styled.div`
-  @keyframes pulseGlow {
-    0% {
-      opacity: 0.6;
-      transform: translate(-50%, -50%) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.05);
-    }
-  }
+const GlowCircle = styled(motion.div)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: ${({ theme }) => theme.colors.primary};
+  opacity: 0.15;
+  filter: blur(60px);
+  border-radius: 50%;
+  z-index: 1;
 `;
 
 function Hero() {
   return (
-    <>
-      <GlobalStyles />
-      <HeroSection id="hero">
-        <HeroContainer>
-          <ProfileImageWrapper
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ 
-              duration: 0.8,
-              ease: "easeOut"
-            }}
+    <HeroSection id="hero">
+      <HeroContainer>
+        <HeroContent>
+          <Greeting
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            <GlowBackground />
-            <ProfileImage 
-              src={profilePicture} 
-              alt="Amir Khalifa"
-            />
-          </ProfileImageWrapper>
-          
-          <HeroContent>
-            <Title 
-              initial={{ opacity: 0, x: 50 }} 
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Hi, I'm <span>Amir Khalifa</span>
-            </Title>
-            <Subtitle 
-              initial={{ opacity: 0, x: 50 }} 
-              animate={{ opacity: 1, x: 0 }} 
-              transition={{ delay: 0.4 }}
-            >
-              Software Engineering Student specializing in Cybersecurity and Cloud Development.
-            </Subtitle>
-            <CallToAction 
-              href="#projects" 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              View My Work
-            </CallToAction>
-          </HeroContent>
-        </HeroContainer>
-      </HeroSection>
-    </>
+            Hi, my name is
+          </Greeting>
+          <Title
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Amir Khalifa.
+            <br />
+            <span>I build things for the web.</span>
+          </Title>
+          <Subtitle
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            Software Engineering Student specializing in Cybersecurity and Cloud Development.
+          </Subtitle>
+          <ButtonGroup
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button as="a" href="#projects">Check out my work</Button>
+            <Button as="a" href="#contact" variant="outline">Contact Me</Button>
+          </ButtonGroup>
+        </HeroContent>
+
+        <ProfileImageWrapper
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlowCircle
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.15, 0.25, 0.15]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <ProfileImage src={profilePicture} alt="Amir Khalifa" />
+        </ProfileImageWrapper>
+      </HeroContainer>
+    </HeroSection>
   );
 }
 

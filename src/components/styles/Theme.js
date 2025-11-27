@@ -4,20 +4,24 @@ export const darkTheme = {
     primary: '#64ffda',
     text: '#ccd6f6',
     accent: '#8892b0',
+    cardBackground: 'rgba(17, 34, 64, 0.7)',
+    cardBorder: 'rgba(100, 255, 218, 0.1)',
   },
   fonts: {
-    main: 'Roboto, sans-serif',
+    main: "'Inter', 'Roboto', sans-serif",
   },
 };
 
 export const lightTheme = {
   colors: {
-    background: '#f9f9f9', // light background color
-    primary: '#007acc', //  blue 
-    text: '#333333', // Darker text color 
-    accent: '#666666', // soft gray 
+    background: '#f9f9f9',
+    primary: '#007acc',
+    text: '#333333',
+    accent: '#666666',
+    cardBackground: 'rgba(255, 255, 255, 0.8)',
+    cardBorder: 'rgba(0, 122, 204, 0.1)',
   },
   fonts: {
-    main: 'Roboto, sans-serif',
+    main: "'Inter', 'Roboto', sans-serif",
   },
 };
