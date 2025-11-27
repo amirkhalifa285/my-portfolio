@@ -131,7 +131,7 @@ function Hero() {
           >
             Amir Khalifa.
             <br />
-            <span>I build things for the web.</span>
+            <span>I build secure and scalable solutions.</span>
           </Title>
           <Subtitle
             initial={{ opacity: 0, y: 20 }}
