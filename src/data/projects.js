@@ -24,6 +24,9 @@ import pythonIcon from '../assets/python.png';
 import fastApiIcon from '../assets/FastAPI.png';
 import reactIcon from '../assets/react.png';
 import moqupsIcon from '../assets/moqups.jpg';
+import cIcon from '../assets/c.png';
+import vlangLogo from '../assets/c.png';
+import vlang1 from '../assets/vlang1.png';
 
 import { FaPencilRuler, FaFileAlt } from 'react-icons/fa';
 import React from 'react';
@@ -34,6 +37,7 @@ export const projects = [
     name: "Lost and Found",
     logo: lostFoundLogo,
     type: "Web Application",
+    category: "fullstack",
     images: [lostFound1],
     duration: "May 2024 - Aug 2024",
     technologies: [
@@ -57,6 +61,7 @@ export const projects = [
     name: "DrinkSmart",
     logo: drinkSmartLogo,
     type: "Application Design and SRS",
+    category: "design",
     images: [drinkSmart1, drinkSmart2, drinkSmart3, drinkSmart4, drinkSmart5, drinkSmartArchitecture],
     duration: "2022",
     technologies: [
@@ -78,6 +83,7 @@ export const projects = [
     name: "FlyEase",
     logo: flyEaseLogo,
     type: "Airport Navigation Application",
+    category: "fullstack",
     images: [flyEase1, flyEase2, flyEase3, flyEase4, flyEase5],
     duration: "Present",
     technologies: [
@@ -100,6 +106,31 @@ export const projects = [
       "Established a modular structure for scalability and maintainability, incorporating reusable components and controllers."
     ],
     githubLink: "https://github.com/amirkhalifa285/FlyEase-Backend",
+    liveLink: null
+  },
+  {
+    id: 4,
+    name: "VLANG Compiler",
+    logo: vlangLogo,
+    type: "Systems Programming",
+    category: "systems",
+    images: [vlang1],
+    duration: "April 2025",
+    technologies: [
+      { name: "C", icon: cIcon, level: 5, isImage: true },
+      { name: "Yacc/Bison", icon: cIcon, level: 4, isImage: true },
+      { name: "Flex", icon: cIcon, level: 4, isImage: true }
+    ],
+    features: [
+      "Designed and implemented a custom programming language compiler from scratch.",
+      "Built a lexical analyzer using Flex to tokenize VLANG source code into meaningful tokens.",
+      "Developed a parser using Bison with grammar rules for variable declarations, loops, conditionals, and print statements.",
+      "Implemented native vector operations including element-wise arithmetic, scalar broadcasting, and dot product calculations.",
+      "Created a symbol table for variable tracking and type checking (scalars vs vectors).",
+      "Generates optimized C code as output, enabling compilation to native executables.",
+      "Supports vector indexing with both integer literals and vector-based index arrays."
+    ],
+    githubLink: "https://github.com/amirkhalifa285/VLANG",
     liveLink: null
   }
 ];

@@ -14,14 +14,51 @@ const ProjectsSection = styled.section`
 
 const Title = styled(motion.h2)`
   font-size: 3em;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
   text-align: center;
   background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.accent});
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
 
-const ProjectGrid = styled.div`
+const categories = [
+  { id: 'all', label: 'All' },
+  { id: 'fullstack', label: 'Full-Stack' },
+  { id: 'cloud', label: 'Cloud' },
+  { id: 'cybersecurity', label: 'Cybersecurity' },
+  { id: 'systems', label: 'Systems Programming' },
+  { id: 'design', label: 'Design' }
+];
+
+const CategoryTabs = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 50px;
+`;
+
+const CategoryTab = styled.button`
+  padding: 10px 24px;
+  border-radius: 30px;
+  border: 2px solid ${({ theme, $active }) => $active ? theme.colors.primary : theme.colors.cardBorder};
+  background: ${({ theme, $active }) => $active
+    ? `linear-gradient(135deg, ${theme.colors.primary}20, ${theme.colors.accent}20)`
+    : 'transparent'};
+  color: ${({ theme, $active }) => $active ? theme.colors.primary : theme.colors.text};
+  font-weight: 600;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => `${theme.colors.primary}10`};
+    transform: translateY(-2px);
+  }
+`;
+
+const ProjectGrid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 40px;
@@ -207,6 +244,11 @@ function Projects() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const filteredProjects = activeCategory === 'all'
+    ? projects
+    : projects.filter(p => p.category === activeCategory);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -242,79 +284,94 @@ function Projects() {
         Featured Projects
       </Title>
 
-      <ProjectGrid>
-        {projects.map((project, index) => (
-          <Card
-            key={project.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
+      <CategoryTabs>
+        {categories.map((cat) => (
+          <CategoryTab
+            key={cat.id}
+            $active={activeCategory === cat.id}
+            onClick={() => setActiveCategory(cat.id)}
           >
-            <ProjectImage onClick={() => openModal(project)}>
-              <img src={project.images[0]} alt={project.name} />
-              <div style={{ position: 'absolute', bottom: 10, right: 10, color: 'white', zIndex: 1 }}>
-                <FaExpand />
-              </div>
-            </ProjectImage>
-
-            <ProjectHeader>
-              <Logo src={project.logo} alt="logo" />
-              <div>
-                <ProjectTitle>{project.name}</ProjectTitle>
-                <div style={{ fontSize: '0.9em', color: '#8892b0' }}>{project.type}</div>
-              </div>
-            </ProjectHeader>
-
-            <Tags>
-              {project.technologies.slice(0, 3).map((tech, i) => (
-                <Tag key={i}>{tech.name}</Tag>
-              ))}
-              {project.technologies.length > 3 && <Tag>+{project.technologies.length - 3}</Tag>}
-            </Tags>
-
-            <Description>
-              {project.features[0]}
-            </Description>
-
-            <ExpandButton onClick={() => toggleExpand(project.id)}>
-              {expandedId === project.id ? (
-                <>Less Details <FaChevronUp /></>
-              ) : (
-                <>More Details <FaChevronDown /></>
-              )}
-            </ExpandButton>
-
-            <AnimatePresence>
-              {expandedId === project.id && (
-                <Details
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                >
-                  <FeatureList>
-                    {project.features.map((feature, i) => (
-                      <li key={i}>{feature}</li>
-                    ))}
-                  </FeatureList>
-
-                  <Links>
-                    {project.githubLink && (
-                      <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                        GitHub Repo
-                      </a>
-                    )}
-                    {project.liveLink && (
-                      <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                        Live Demo
-                      </a>
-                    )}
-                  </Links>
-                </Details>
-              )}
-            </AnimatePresence>
-          </Card>
+            {cat.label}
+          </CategoryTab>
         ))}
+      </CategoryTabs>
+
+      <ProjectGrid layout>
+        <AnimatePresence mode="popLayout">
+          {filteredProjects.map((project, index) => (
+            <Card
+              key={project.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+            >
+              <ProjectImage onClick={() => openModal(project)}>
+                <img src={project.images[0]} alt={project.name} />
+                <div style={{ position: 'absolute', bottom: 10, right: 10, color: 'white', zIndex: 1 }}>
+                  <FaExpand />
+                </div>
+              </ProjectImage>
+
+              <ProjectHeader>
+                <Logo src={project.logo} alt="logo" />
+                <div>
+                  <ProjectTitle>{project.name}</ProjectTitle>
+                  <div style={{ fontSize: '0.9em', color: '#8892b0' }}>{project.type}</div>
+                </div>
+              </ProjectHeader>
+
+              <Tags>
+                {project.technologies.slice(0, 3).map((tech, i) => (
+                  <Tag key={i}>{tech.name}</Tag>
+                ))}
+                {project.technologies.length > 3 && <Tag>+{project.technologies.length - 3}</Tag>}
+              </Tags>
+
+              <Description>
+                {project.features[0]}
+              </Description>
+
+              <ExpandButton onClick={() => toggleExpand(project.id)}>
+                {expandedId === project.id ? (
+                  <>Less Details <FaChevronUp /></>
+                ) : (
+                  <>More Details <FaChevronDown /></>
+                )}
+              </ExpandButton>
+
+              <AnimatePresence>
+                {expandedId === project.id && (
+                  <Details
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                  >
+                    <FeatureList>
+                      {project.features.map((feature, i) => (
+                        <li key={i}>{feature}</li>
+                      ))}
+                    </FeatureList>
+
+                    <Links>
+                      {project.githubLink && (
+                        <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
+                          GitHub Repo
+                        </a>
+                      )}
+                      {project.liveLink && (
+                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                          Live Demo
+                        </a>
+                      )}
+                    </Links>
+                  </Details>
+                )}
+              </AnimatePresence>
+            </Card>
+          ))}
+        </AnimatePresence>
       </ProjectGrid>
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
