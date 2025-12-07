@@ -38,7 +38,10 @@ function About() {
         <Title>About Me</Title>
         <Paragraph>
           I am a 4th year software engineering student with an academic specialty in full-stack development and cybersecurity,
-          aspiring to become a DevOps engineer, with passion leaning towards the world realm of cloud computing, networking and cybersecurity.
+          Passionate about the realm of cloud computing, networking and cybersecurity.
+          And I like to tinker with hardware frequently, and try out different linux distors...
+
+          I use Arch btw.
         </Paragraph>
       </AboutContent>
     </AboutSection>
