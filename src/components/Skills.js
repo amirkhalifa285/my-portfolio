@@ -55,61 +55,65 @@ function Skills() {
       <h2>Skills</h2>
       <SkillsContainer>
         <SkillCategory>
-          <h3>Languages & Scripting</h3>
+          <h3>Languages</h3>
           <ul>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>Node.js</li>
             <li>Python</li>
+            <li>JavaScript/TypeScript</li>
             <li>C/C++</li>
-            <li>Assembly</li>
             <li>Bash</li>
-            <li>PowerShell</li>
           </ul>
         </SkillCategory>
 
         <SkillCategory>
-          <h3>Databases</h3>
+          <h3>Backend & APIs</h3>
           <ul>
+            <li>FastAPI</li>
+            <li>Node.js/Express</li>
+            <li>REST APIs</li>
+            <li>PostgreSQL</li>
             <li>MySQL</li>
             <li>MongoDB</li>
-            <li>PostgreSQL</li>
+            <li>Supabase</li>
           </ul>
         </SkillCategory>
 
         <SkillCategory>
-          <h3>Frameworks & Libraries</h3>
+          <h3>Frontend</h3>
           <ul>
-            <li>React.js</li>
+            <li>React</li>
+            <li>HTML</li>
+            <li>CSS</li>
           </ul>
         </SkillCategory>
 
         <SkillCategory>
-          <h3>Cloud & Operating Systems</h3>
+          <h3>Cloud, DevOps & Monitoring</h3>
           <ul>
             <li>AWS</li>
-            <li>Ubuntu</li>
-            <li>Unix</li>
+            <li>Docker</li>
+            <li>Linux (Ubuntu, Debian, RHEL)</li>
+            <li>Datadog</li>
+            <li>Coralogix</li>
+            <li>Logz.io</li>
+            <li>OpsGenie</li>
+            <li>Azure DevOps</li>
+            <li>Jira</li>
+            <li>Confluence</li>
+            <li>Git</li>
           </ul>
         </SkillCategory>
 
         <SkillCategory>
           <h3>Security & Networking</h3>
           <ul>
-            <li>Network Protocols</li>
-            <li>Cryptography</li>
-          </ul>
-        </SkillCategory>
-
-        <SkillCategory>
-          <h3>Soft Skills</h3>
-          <ul>
-            <li>Analytical Thinking</li>
-            <li>Problem Solving</li>
-            <li>Time Management</li>
-            <li>Communication</li>
-            <li>Monitoring</li>
+            <li>TCP/IP, HTTP</li>
+            <li>Wireshark</li>
+            <li>Kali Linux</li>
+            <li>Burp Suite (Community)</li>
+            <li>Scapy</li>
+            <li>Web Security (XSS, CSRF, SQL Injection)</li>
+            <li>Basic Cryptography</li>
+            <li>Secure Coding Concepts</li>
           </ul>
         </SkillCategory>
       </SkillsContainer>

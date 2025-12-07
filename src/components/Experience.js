@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaChevronDown, FaChevronUp, FaDatabase, FaServer, FaCode, FaChartLine, FaShieldAlt } from 'react-icons/fa';
-import { SiMysql, SiPython } from 'react-icons/si';
+import { FaChevronDown, FaChevronUp, FaDatabase, FaServer, FaCode, FaChartLine, FaShieldAlt, FaUsers, FaClipboardList } from 'react-icons/fa';
+import { SiMysql, SiJira, SiConfluence, SiAzuredevops } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Import company logos
@@ -9,6 +9,7 @@ import coolVisionLogo from '../assets/coolvision.png';
 import isiLogo from '../assets/isi.png';
 import femiLogo from '../assets/Femi.png';
 import yesLogo from '../assets/yes.png';
+import aristocratLogo from '../assets/aristocrat-interactive.png';
 
 // Import technology icons
 import awsIcon from '../assets/aws.png';
@@ -16,6 +17,10 @@ import excelIcon from '../assets/excel.png';
 import opsviewIcon from '../assets/opsview.png';
 import dynatraceIcon from '../assets/dynatrace.png';
 import zabbixIcon from '../assets/zabbix.png';
+import datadogIcon from '../assets/datadog.png';
+import coralogixIcon from '../assets/coralogix.png';
+import logzioIcon from '../assets/logzio.png';
+import opsgenieIcon from '../assets/opsgenie.jpg';
 
 const ExperienceSection = styled.section`
   padding: 80px 20px;
@@ -42,7 +47,6 @@ const ExperienceContainer = styled.div`
   }
 `;
 
-// Timeline Line
 const TimelineLine = styled.div`
   position: absolute;
   left: 20px;
@@ -60,7 +64,6 @@ const TimelineLine = styled.div`
   }
 `;
 
-// Timeline Node
 const TimelineNode = styled.div`
   position: absolute;
   left: -47px;
@@ -106,18 +109,6 @@ const JobCard = styled.div`
     transform: translateX(5px);
     box-shadow: 0 8px 15px rgba(100, 255, 218, 0.2);
     border-color: ${({ theme }) => theme.colors.primary}40;
-  }
-  
-  &:hover ${TimelineNode} {
-    width: 20px;
-    height: 20px;
-    left: -49px;
-    top: 38px;
-    box-shadow: 0 0 0 8px ${({ theme }) => theme.colors.primary}30;
-    
-    @media (max-width: 768px) {
-      left: -39px;
-    }
   }
   
   &:last-child {
@@ -275,7 +266,7 @@ const Dot = styled.span`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${({ filled, theme }) => 
+  background-color: ${({ filled, theme }) =>
     filled ? theme.colors.primary : theme.colors.accent + '30'};
   transition: background-color 0.3s ease;
 `;
@@ -330,6 +321,49 @@ function Experience() {
   const experiences = [
     {
       id: 1,
+      company: "Aristocrat Interactive",
+      logo: aristocratLogo,
+      title: "NOC Shift Leader",
+      duration: "October 2025 - Present | Tel Aviv",
+      skills: [
+        { name: "Datadog", icon: datadogIcon, level: 5, isImage: true },
+        { name: "Coralogix", icon: coralogixIcon, level: 5, isImage: true },
+        { name: "OpsGenie", icon: opsgenieIcon, level: 5, isImage: true },
+        { name: "Jira", icon: <SiJira />, level: 5 },
+        { name: "Azure DevOps", icon: <SiAzuredevops />, level: 4 },
+        { name: "Confluence", icon: <SiConfluence />, level: 5 },
+        { name: "Team Leadership", icon: <FaUsers />, level: 4 },
+        { name: "Incident Management", icon: <FaClipboardList />, level: 5 }
+      ],
+      responsibilities: [
+        "Promoted to shift leader position in 8 months to oversee 24/7 monitoring for real-money iGaming platforms, coordinating team tasks and workflows.",
+        "Led end-to-end incident handling through root cause analysis and swift coordination with infrastructure teams via Jira and Azure DevOps.",
+        "Provided problem management support for customers during incidents, delivering clear status updates and post-incident reports.",
+        "Maintained playbooks and documentation in Atlassian Confluence to ensure operational consistency."
+      ]
+    },
+    {
+      id: 2,
+      company: "Aristocrat Interactive",
+      logo: aristocratLogo,
+      title: "NOC/SOC Engineer",
+      duration: "March 2025 - October 2025 | Tel Aviv",
+      skills: [
+        { name: "Datadog", icon: datadogIcon, level: 5, isImage: true },
+        { name: "Coralogix", icon: coralogixIcon, level: 5, isImage: true },
+        { name: "Logz.io", icon: logzioIcon, level: 4, isImage: true },
+        { name: "OpsGenie", icon: opsgenieIcon, level: 5, isImage: true },
+        { name: "Jira", icon: <SiJira />, level: 5 },
+        { name: "Azure DevOps", icon: <SiAzuredevops />, level: 4 }
+      ],
+      responsibilities: [
+        "Monitored multiple regulated lottery environments using Datadog, Coralogix, Logz.io, and OpsGenie.",
+        "Acted as first line of defense during daily maintenance windows including OS patches, new releases, and infrastructure changes.",
+        "Investigated logs and metrics to understand impact and ownership, then routed incidents to DevOps, IT, Developers, or DBAs via Jira and Azure DevOps."
+      ]
+    },
+    {
+      id: 3,
       company: "CoolVision",
       logo: coolVisionLogo,
       title: "Network Operations Center (NOC) Engineer",
@@ -355,16 +389,15 @@ function Experience() {
       ]
     },
     {
-      id: 2,
+      id: 4,
       company: "Israel Standardization Institute",
       logo: isiLogo,
       title: "Gold Department IT, Tel Aviv",
       duration: "May 2023 - Aug 2024",
       skills: [
-        { name: "Excel", icon: excelIcon, level: 5, isImage: true },
-        { name: "Database Management", icon: <FaDatabase />, level: 4 },
-        { name: "IT Support", icon: <FaServer />, level: 5 },
-        { name: "Python", icon: <SiPython />, level: 3 }
+        { name: "Excel", icon: excelIcon, level: 3, isImage: true },
+        { name: "Database Management", icon: <FaDatabase />, level: 1 },
+        { name: "IT Support", icon: <FaServer />, level: 2 }
       ],
       responsibilities: [
         "Handled technical issues with laboratory and office equipment within the department.",
@@ -373,7 +406,7 @@ function Experience() {
       ]
     },
     {
-      id: 3,
+      id: 5,
       company: "Femi Premium",
       logo: femiLogo,
       title: "SQL-Technician, Ben-Gurion Airport",
@@ -392,7 +425,7 @@ function Experience() {
       ]
     },
     {
-      id: 4,
+      id: 6,
       company: "Yes TV",
       logo: yesLogo,
       title: "Technical Support Agent, Babcom Centers",
@@ -416,7 +449,7 @@ function Experience() {
       <ExperienceContainer>
         <TimelineLine />
         {experiences.map((job) => (
-          <JobCard 
+          <JobCard
             key={job.id}
             onClick={() => toggleCard(job.id)}
             onMouseEnter={() => setHoveredCard(job.id)}
@@ -444,7 +477,7 @@ function Experience() {
                 </ToggleButton>
               </CompanyInfo>
             </JobHeader>
-            
+
             <AnimatePresence>
               {expandedCards[job.id] && (
                 <JobDetails
@@ -471,7 +504,7 @@ function Experience() {
                       ))}
                     </SkillsGrid>
                   </SkillsSection>
-                  
+
                   <ResponsibilityList>
                     {job.responsibilities.map((resp, index) => (
                       <Responsibility key={index}>{resp}</Responsibility>

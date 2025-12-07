@@ -27,6 +27,10 @@ import moqupsIcon from '../assets/moqups.jpg';
 import cIcon from '../assets/c.png';
 import vlangLogo from '../assets/c.png';
 import vlang1 from '../assets/vlang1.png';
+import arpDns1 from '../assets/arp_dns_spoofing_1.png';
+import arpDns2 from '../assets/arp_dns_spoofing_2.png';
+import arpDns3 from '../assets/arp_dns_spoofing_3.png';
+import pedometer1 from '../assets/pedometer.jpg';
 
 import { FaPencilRuler, FaFileAlt } from 'react-icons/fa';
 import React from 'react';
@@ -131,6 +135,52 @@ export const projects = [
       "Supports vector indexing with both integer literals and vector-based index arrays."
     ],
     githubLink: "https://github.com/amirkhalifa285/VLANG",
+    liveLink: null
+  },
+  {
+    id: 5,
+    name: "ARP & DNS Spoofing",
+    logo: pythonIcon,
+    type: "Cybersecurity Tool",
+    category: "cybersecurity",
+    images: [arpDns1, arpDns2, arpDns3],
+    duration: "July 2025",
+    technologies: [
+      { name: "Python", icon: pythonIcon, level: 5, isImage: true }
+    ],
+    features: [
+      "Developed a Man-in-the-Middle (MITM) attack toolkit demonstrating ARP and DNS spoofing techniques.",
+      "Built an ARP spoofer using Scapy to intercept network traffic by poisoning ARP tables of target and gateway.",
+      "Implemented DNS spoofing to redirect victims to attacker-controlled servers by modifying DNS responses.",
+      "Utilized NetfilterQueue for real-time packet interception and modification.",
+      "Includes automatic ARP table restoration on exit to maintain network integrity.",
+      "Created comprehensive documentation with Wireshark packet captures (.pcapng) for attack analysis.",
+      "Demonstrated attack in controlled lab environment with video walkthrough and presentation."
+    ],
+    githubLink: "https://github.com/amirkhalifa285/arp-dns-spoofing",
+    liveLink: null
+  },
+  {
+    id: 6,
+    name: "Pedometer",
+    logo: cIcon,
+    type: "Embedded Systems",
+    category: "systems",
+    images: [pedometer1],
+    duration: "June 2024",
+    technologies: [
+      { name: "C", icon: cIcon, level: 5, isImage: true }
+    ],
+    features: [
+      "Built a fully functional pedometer using the MicroChip Curiosity Nano development board.",
+      "Implemented step detection algorithm using accelerometer data with threshold-based filtering.",
+      "Developed custom I2C driver for communication with the onboard accelerometer sensor.",
+      "Created SPI driver to interface with the OLED display for real-time step visualization.",
+      "Designed an interactive menu system with clock display, date/time settings, and pedometer graph.",
+      "Implemented step history tracking with smoothed graph visualization on OLED display.",
+      "Added animated foot icons and real-time step counter with activity detection."
+    ],
+    githubLink: "https://github.com/amirkhalifa285/PedoMeter-MicroChipCuriosity24",
     liveLink: null
   }
 ];
