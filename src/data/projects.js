@@ -33,6 +33,9 @@ import arpDns3 from '../assets/arp_dns_spoofing_3.png';
 import pedometer1 from '../assets/pedometer.jpg';
 import netflixClone1 from '../assets/netflix-clone_1.jpg';
 import netflixClone2 from '../assets/netflix-clone_2.jpg';
+import wildRydes1 from '../assets/wilde-rydes.png';
+import awsIcon from '../assets/aws.png';
+import portfolioArch from '../assets/portfolio-architecture.png';
 
 import { FaPencilRuler, FaFileAlt } from 'react-icons/fa';
 import React from 'react';
@@ -41,6 +44,33 @@ export const projects = [
   // Newest projects first
   {
     id: 1,
+    name: "Portfolio Cloud Architecture",
+    logo: awsIcon,
+    type: "Serverless Cloud Infrastructure",
+    category: "cloud",
+    images: [portfolioArch],
+    duration: "December 2024",
+    technologies: [
+      { name: "AWS", icon: awsIcon, level: 5, isImage: true },
+      { name: "React", icon: reactIcon, level: 5, isImage: true },
+      { name: "Python", icon: pythonIcon, level: 4, isImage: true },
+      { name: "JavaScript", icon: jsIcon, level: 5, isImage: true }
+    ],
+    features: [
+      "Built a fully serverless portfolio website using AWS Amplify with integrated CI/CD from GitHub.",
+      "Configured Route 53 for DNS management of custom domain (amirkhalifa.com).",
+      "Implemented contact form backend with API Gateway REST endpoint, Lambda function, and Amazon SES.",
+      "Applied defense-in-depth security: rate limiting (3 req/15 min), input validation, spam keyword filtering.",
+      "Followed AWS IAM least-privilege principle - Lambda has minimal permissions (SES:SendEmail only).",
+      "Configured CloudWatch monitoring for Lambda execution and error logging.",
+      "Achieved zero-server architecture with automatic scaling and built-in high availability.",
+      "Enforced HTTPS encryption with TLS 1.2+ via CloudFront CDN (managed by Amplify)."
+    ],
+    githubLink: "https://github.com/amirkhalifa285/my-portfolio",
+    liveLink: "https://amirkhalifa.com"
+  },
+  {
+    id: 2,
     name: "ARP & DNS Spoofing",
     logo: pythonIcon,
     type: "Cybersecurity Tool",
@@ -63,7 +93,7 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 2,
+    id: 3,
     name: "VLANG Compiler",
     logo: vlangLogo,
     type: "Systems Programming",
@@ -88,7 +118,7 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 3,
+    id: 4,
     name: "FlyEase",
     logo: flyEaseLogo,
     type: "Airport Navigation Application",
@@ -118,7 +148,34 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 4,
+    id: 5,
+    name: "WildRydes",
+    logo: awsIcon,
+    type: "Serverless Web Application",
+    category: "cloud",
+    images: [wildRydes1],
+    duration: "July 2024",
+    technologies: [
+      { name: "Vue.js", icon: jsIcon, level: 4, isImage: true },
+      { name: "JavaScript", icon: jsIcon, level: 5, isImage: true },
+      { name: "Python", icon: pythonIcon, level: 4, isImage: true },
+      { name: "AWS", icon: awsIcon, level: 4, isImage: true },
+      { name: "CSS", icon: cssIcon, level: 4, isImage: true }
+    ],
+    features: [
+      "Built a serverless web application using AWS Amplify CLI and Vue.js frontend.",
+      "Implemented user authentication and authorization with Amazon Cognito.",
+      "Developed serverless backend with AWS Lambda functions in Python.",
+      "Created RESTful API endpoints using Amazon API Gateway.",
+      "Utilized Amazon DynamoDB for NoSQL database storage.",
+      "Deployed static assets to Amazon S3 for scalable hosting.",
+      "Implemented full CI/CD pipeline with AWS Amplify for automatic deployments."
+    ],
+    githubLink: "https://github.com/amirkhalifa285/wildrydes-serverless-webapp",
+    liveLink: null
+  },
+  {
+    id: 6,
     name: "Netflix Clone",
     logo: reactIcon,
     type: "Full Stack Web Application",
@@ -143,7 +200,7 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 5,
+    id: 7,
     name: "Pedometer",
     logo: cIcon,
     type: "Embedded Systems",
@@ -166,7 +223,7 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 6,
+    id: 8,
     name: "Lost and Found",
     logo: lostFoundLogo,
     type: "Web Application",
@@ -190,7 +247,7 @@ export const projects = [
     liveLink: null
   },
   {
-    id: 7,
+    id: 9,
     name: "DrinkSmart",
     logo: drinkSmartLogo,
     type: "Application Design and SRS",
