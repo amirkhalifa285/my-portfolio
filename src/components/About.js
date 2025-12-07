@@ -38,8 +38,7 @@ function About() {
         <Title>About Me</Title>
         <Paragraph>
           I am a 4th year software engineering student with an academic specialty in full-stack development and cybersecurity,
-          aspiring to become a DevOps engineer, with passion towards cloud computing. I am a part time trader and investor in cryptocurrencies and stocks
-          with an experience of 3 years and counting in the market.
+          aspiring to become a DevOps engineer, with passion leaning towards the world realm of cloud computing, networking and cybersecurity.
         </Paragraph>
       </AboutContent>
     </AboutSection>
