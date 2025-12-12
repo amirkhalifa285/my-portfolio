@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaChevronDown, FaChevronUp, FaDatabase, FaServer, FaCode, FaChartLine, FaShieldAlt, FaUsers, FaClipboardList } from 'react-icons/fa';
-import { SiMysql, SiJira, SiConfluence, SiAzuredevops } from 'react-icons/si';
+import { FaChevronDown, FaChevronUp, FaDatabase, FaServer, FaCode, FaChartLine, FaShieldAlt, FaUsers, FaClipboardList, FaTools } from 'react-icons/fa';
+import { SiMysql, SiJira, SiConfluence } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Import company logos
@@ -330,7 +330,7 @@ function Experience() {
         { name: "Coralogix", icon: coralogixIcon, level: 5, isImage: true },
         { name: "OpsGenie", icon: opsgenieIcon, level: 5, isImage: true },
         { name: "Jira", icon: <SiJira />, level: 5 },
-        { name: "Azure DevOps", icon: <SiAzuredevops />, level: 4 },
+        { name: "Azure DevOps", icon: <FaTools />, level: 4 },
         { name: "Confluence", icon: <SiConfluence />, level: 5 },
         { name: "Team Leadership", icon: <FaUsers />, level: 4 },
         { name: "Incident Management", icon: <FaClipboardList />, level: 5 }
@@ -354,7 +354,7 @@ function Experience() {
         { name: "Logz.io", icon: logzioIcon, level: 4, isImage: true },
         { name: "OpsGenie", icon: opsgenieIcon, level: 5, isImage: true },
         { name: "Jira", icon: <SiJira />, level: 5 },
-        { name: "Azure DevOps", icon: <SiAzuredevops />, level: 4 }
+        { name: "Azure DevOps", icon: <FaTools />, level: 4 }
       ],
       responsibilities: [
         "Monitored multiple regulated lottery environments using Datadog, Coralogix, Logz.io, and OpsGenie.",
