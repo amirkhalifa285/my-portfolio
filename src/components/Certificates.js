@@ -252,7 +252,7 @@ function Certificates() {
       issuer: "Docker",
       date: "December 2025",
       icon: <SiDocker />,
-      pdfPath: `${process.env.PUBLIC_URL}/docker-foundations-certificate.pdf#view=FitH`
+      pdfPath: "/docker-foundations-certificate.pdf"
     }
     // Add more certificates here as you acquire them
   ];

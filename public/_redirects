@@ -1,0 +1,6 @@
+# Handle SPA routing
+# This rule has 200 status without the ! flag, which means:
+# "Only redirect to index.html if the requested file doesn't exist"
+# Static files (like PDFs) will be served directly
+
+/*  /index.html  200
