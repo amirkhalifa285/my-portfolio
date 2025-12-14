@@ -6,6 +6,7 @@ import { lightTheme, darkTheme } from './components/styles/Theme';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
+import Certificates from './components/Certificates';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
@@ -28,6 +29,7 @@ function App() {
         <main>
           <Hero />
           <About />
+          <Certificates />
           <Experience />
           <Projects />
           <Skills />

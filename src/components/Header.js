@@ -113,6 +113,7 @@ function Header({ toggleTheme, isDarkMode }) {
       <NavLinks open={menuOpen}>
         <NavLink href="#hero" onClick={() => setMenuOpen(false)}>Home</NavLink>
         <NavLink href="#about" onClick={() => setMenuOpen(false)}>About</NavLink>
+        <NavLink href="#certificates" onClick={() => setMenuOpen(false)}>Certificates</NavLink>
         <NavLink href="#experience" onClick={() => setMenuOpen(false)}>Experience</NavLink>
         <NavLink href="#projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
         <NavLink href="#skills" onClick={() => setMenuOpen(false)}>Skills</NavLink>
