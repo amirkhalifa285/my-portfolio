@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import profilePicture from '../assets/profile_picture.png';
+import profilePicture from '../assets/updated_pic-removebg-preview.png';
 import Button from './ui/Button';
 
 const HeroSection = styled.section`
