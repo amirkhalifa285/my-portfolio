@@ -257,15 +257,25 @@ function Certificates() {
     // Add more certificates here as you acquire them
   ];
 
+  const closeModal = React.useCallback(() => {
+    setSelectedCert(null);
+    document.body.style.overflow = 'unset';
+  }, []);
+
   const openModal = (cert) => {
     setSelectedCert(cert);
     document.body.style.overflow = 'hidden';
   };
 
-  const closeModal = () => {
-    setSelectedCert(null);
-    document.body.style.overflow = 'unset';
-  };
+  React.useEffect(() => {
+    if (selectedCert) {
+      const handleEscape = (e) => {
+        if (e.key === 'Escape') closeModal();
+      };
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [selectedCert, closeModal]);
 
   const openInNewTab = () => {
     if (selectedCert) {

@@ -23,7 +23,7 @@ const SkillCategory = styled.div`
   border-radius: 8px;
   padding: 20px;
   width: 250px;
-  box-shadow: 0 4px 6px${({ theme }) => theme.colors.primary}; /* This can remain unchanged */
+  box-shadow: 0 4px 6px ${({ theme }) => theme.colors.primary}20;
 
   h3 {
     color: ${({ theme }) => theme.colors.primary}; /* Dynamic primary color */

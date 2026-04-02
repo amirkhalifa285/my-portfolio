@@ -70,13 +70,18 @@ const Modal = ({ isOpen, onClose, children }) => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') onClose();
+            };
+            document.addEventListener('keydown', handleEscape);
+            return () => {
+                document.body.style.overflow = 'unset';
+                document.removeEventListener('keydown', handleEscape);
+            };
         } else {
             document.body.style.overflow = 'unset';
         }
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     return (
         <AnimatePresence>

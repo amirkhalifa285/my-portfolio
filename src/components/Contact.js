@@ -337,12 +337,9 @@ function Contact() {
           setShowSuccess(false);
         }, 5000);
       } else {
-        // Handle error response
-        console.error('Error:', data);
         setErrors({ submit: data.error || 'Failed to send message. Please try again.' });
       }
     } catch (error) {
-      console.error('Network error:', error);
       setErrors({ submit: 'Network error. Please check your connection and try again.' });
     } finally {
       setIsSubmitting(false);
