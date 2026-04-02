@@ -21,3 +21,7 @@ frontend:
           value: application/pdf
         - key: Content-Disposition
           value: inline
+    - pattern: '*.mp4'
+      headers:
+        - key: Content-Type
+          value: video/mp4

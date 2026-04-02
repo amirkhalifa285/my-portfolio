@@ -27,6 +27,8 @@ import moqupsIcon from '../assets/moqups.jpg';
 import cIcon from '../assets/c.png';
 import vlangLogo from '../assets/c.png';
 import vlang1 from '../assets/vlang1.png';
+import vlangLexer from '../assets/vlang_lexer.png';
+import vlangParser from '../assets/vlang_parser.png';
 import arpDns1 from '../assets/arp_dns_spoofing_1.png';
 import arpDns2 from '../assets/arp_dns_spoofing_2.png';
 import arpDns3 from '../assets/arp_dns_spoofing_3.png';
@@ -217,7 +219,8 @@ export const projects = [
     logo: vlangLogo,
     type: "Systems Programming",
     category: "systems",
-    images: [vlang1],
+    images: [vlang1, vlangLexer, vlangParser],
+    video: "/videos/VLANG-demo.mp4",
     duration: "April 2025",
     technologies: [
       { name: "C", icon: cIcon, level: 5, isImage: true },
