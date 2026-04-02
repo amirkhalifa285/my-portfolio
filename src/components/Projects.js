@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaExpand } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaExpand, FaPlay } from 'react-icons/fa';
 import { projects } from '../data/projects';
 import Card from './ui/Card';
 import Modal from './ui/Modal';
@@ -239,6 +239,28 @@ const NavButton = styled.button`
   &.next { right: 10px; }
 `;
 
+const VideoBadge = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 1;
+`;
+
+const ModalVideo = styled.video`
+  width: 100%;
+  max-height: 500px;
+  border-radius: 12px;
+  background: #000;
+`;
+
 function Projects() {
   const [expandedId, setExpandedId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -260,17 +282,32 @@ function Projects() {
     setModalOpen(true);
   };
 
+  const getMediaCount = (project) => {
+    return (project.video ? 1 : 0) + project.images.length;
+  };
+
+  const isVideoSlide = (project, index) => {
+    return project.video && index === 0;
+  };
+
+  const getImageForSlide = (project, index) => {
+    const imageIndex = project.video ? index - 1 : index;
+    return project.images[imageIndex];
+  };
+
   const nextImage = (e) => {
     e.stopPropagation();
     if (selectedProject) {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length);
+      const total = getMediaCount(selectedProject);
+      setCurrentImageIndex((prev) => (prev + 1) % total);
     }
   };
 
   const prevImage = (e) => {
     e.stopPropagation();
     if (selectedProject) {
-      setCurrentImageIndex((prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length);
+      const total = getMediaCount(selectedProject);
+      setCurrentImageIndex((prev) => (prev - 1 + total) % total);
     }
   };
 
@@ -309,6 +346,9 @@ function Projects() {
             >
               <ProjectImage onClick={() => openModal(project)}>
                 <img src={project.images[0]} alt={project.name} />
+                {project.video && (
+                  <VideoBadge><FaPlay /> Demo Video</VideoBadge>
+                )}
                 <div style={{ position: 'absolute', bottom: 10, right: 10, color: 'white', zIndex: 1 }}>
                   <FaExpand />
                 </div>
@@ -360,6 +400,11 @@ function Projects() {
                           GitHub Repo
                         </a>
                       )}
+                      {project.docsLink && (
+                        <a href={project.docsLink} target="_blank" rel="noopener noreferrer">
+                          Documentation
+                        </a>
+                      )}
                       {project.liveLink && (
                         <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
                           Live Demo
@@ -377,21 +422,34 @@ function Projects() {
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         {selectedProject && (
           <ModalContent>
-            <ModalImageContainer>
-              {selectedProject.images.length > 1 && (
-                <>
-                  <NavButton className="prev" onClick={prevImage}><FaChevronLeft /></NavButton>
-                  <NavButton className="next" onClick={nextImage}><FaChevronRight /></NavButton>
-                </>
-              )}
-              <img
-                src={selectedProject.images[currentImageIndex]}
-                alt={`${selectedProject.name} screenshot`}
-              />
-            </ModalImageContainer>
+            {isVideoSlide(selectedProject, currentImageIndex) ? (
+              <ModalVideo controls autoPlay>
+                <source src={selectedProject.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </ModalVideo>
+            ) : (
+              <ModalImageContainer>
+                {getMediaCount(selectedProject) > 1 && (
+                  <>
+                    <NavButton className="prev" onClick={prevImage}><FaChevronLeft /></NavButton>
+                    <NavButton className="next" onClick={nextImage}><FaChevronRight /></NavButton>
+                  </>
+                )}
+                <img
+                  src={getImageForSlide(selectedProject, currentImageIndex)}
+                  alt={`${selectedProject.name} screenshot`}
+                />
+              </ModalImageContainer>
+            )}
+            {getMediaCount(selectedProject) > 1 && isVideoSlide(selectedProject, currentImageIndex) && (
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+                <NavButton className="prev" onClick={prevImage} style={{ position: 'static', transform: 'none', borderRadius: '50%' }}><FaChevronLeft /></NavButton>
+                <NavButton className="next" onClick={nextImage} style={{ position: 'static', transform: 'none', borderRadius: '50%' }}><FaChevronRight /></NavButton>
+              </div>
+            )}
             <div style={{ textAlign: 'center' }}>
               <h3>{selectedProject.name} Gallery</h3>
-              <p>{currentImageIndex + 1} / {selectedProject.images.length}</p>
+              <p>{currentImageIndex + 1} / {getMediaCount(selectedProject)}</p>
             </div>
           </ModalContent>
         )}

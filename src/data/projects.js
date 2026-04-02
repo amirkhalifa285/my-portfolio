@@ -37,11 +37,130 @@ import wildRydes1 from '../assets/wilde-rydes.png';
 import awsIcon from '../assets/aws.png';
 import portfolioArch from '../assets/portfolio-architecture.png';
 
-import { FaPencilRuler, FaFileAlt } from 'react-icons/fa';
+import roboArmThumbnail from '../assets/RoboArm-thumbnail.jpg';
+import bloodTestsArch from '../assets/BloodTests-architecture.png';
+
+import safeRideLogo from '../assets/SafeRide-logo.png';
+import safeRideEspBoards from '../assets/SafeRide-esp_boards.jpeg';
+import safeRideConvoyValidation from '../assets/SafeRide-real_convoy_validation.jpeg';
+import safeRideRewardGraph from '../assets/SafeRide-reward_graph.jpeg';
+import safeRideTwoPhase from '../assets/SafeRide-two_phase_overview.jpg';
+import safeRideDataFlow from '../assets/SafeRide-data_flow_diagram.jpg';
+import safeRidePipeline from '../assets/SafeRide-pipeline_automation.jpg';
+import safeRideDeepSets from '../assets/SafeRide-deep_sets_architecture.png';
+import safeRideVisual from '../assets/SafeRide-visual.png';
+import safeRidePPO from '../assets/SafeRide-ppo_training_flow.png';
+
+import { FaPencilRuler, FaFileAlt, FaMicrochip, FaBrain, FaDocker, FaRobot, FaLock, FaSlack } from 'react-icons/fa';
+import { SiCplusplus, SiPlatformio } from 'react-icons/si';
 import React from 'react';
 
 export const projects = [
   // Newest projects first
+  {
+    id: 10,
+    name: "SafeRide",
+    logo: safeRideLogo,
+    type: "V2V Collision Avoidance System",
+    category: "systems",
+    images: [
+      safeRideVisual,
+      safeRideEspBoards,
+      safeRideTwoPhase,
+      safeRideDataFlow,
+      safeRideDeepSets,
+      safeRidePPO,
+      safeRidePipeline,
+      safeRideConvoyValidation,
+      safeRideRewardGraph
+    ],
+    video: "/videos/SafeRide-demo.mp4",
+    duration: "2025 - 2026",
+    description: "Built an infrastructure-free V2V collision-avoidance system on ESP32 using ESP-NOW mesh networking, onboard sensing, and reinforcement learning.",
+    technologies: [
+      { name: "ESP32", icon: <FaMicrochip />, level: 5 },
+      { name: "Python", icon: pythonIcon, level: 5, isImage: true },
+      { name: "TensorFlow Lite", icon: <FaBrain />, level: 4 },
+      { name: "SUMO", icon: pythonIcon, level: 4, isImage: true },
+      { name: "ESP-NOW", icon: <FaMicrochip />, level: 5 },
+      { name: "Docker", icon: <FaDocker />, level: 4 },
+      { name: "C++", icon: <SiCplusplus />, level: 4 },
+      { name: "Reinforcement Learning", icon: <FaBrain />, level: 4 }
+    ],
+    features: [
+      "Built an infrastructure-free V2V collision-avoidance system on ESP32 using ESP-NOW mesh networking, onboard sensing, and reinforcement learning.",
+      "Designed a custom Python ESP-NOW emulator calibrated with real hardware latency, jitter, and packet-loss measurements to reduce the sim-to-real gap.",
+      "Implemented a Deep Sets + PPO policy that handles a dynamic number of nearby vehicles without hardcoded peer slots or manual sorting.",
+      "Built multi-hop mesh relay logic so each vehicle rebroadcasts upstream hazard data, enabling the ego vehicle to react to braking events beyond direct radio range.",
+      "Integrated GPS, IMU, magnetometer, and SD-card logging across 3 ESP32 nodes to capture real convoy behavior for training and validation.",
+      "Trained and evaluated the system in SUMO before targeting deployment with quantized TensorFlow Lite Micro inference on ESP32.",
+      "Validated the stack with 211 unit tests and 19 integration tests spanning firmware, simulation, and ML components."
+    ],
+    githubLink: "https://github.com/roadsense-team/roadsense-v2v",
+    docsLink: "https://github.com/amirkhalifa285/SafeRide-Project_Documentation",
+    liveLink: null
+  },
+  {
+    id: 11,
+    name: "RoboArm",
+    logo: cIcon,
+    type: "Gesture-Controlled Wireless Robot Arm",
+    category: "systems",
+    images: [roboArmThumbnail],
+    video: "/videos/RoboArm-demo.mp4",
+    duration: "2025",
+    description: "A wireless gesture-controlled 4-DOF robot arm using ESP32 microcontrollers, MPU6500 IMU sensing, and ESP-NOW communication with sub-50ms latency.",
+    technologies: [
+      { name: "ESP32", icon: <FaMicrochip />, level: 5 },
+      { name: "C++", icon: <SiCplusplus />, level: 5 },
+      { name: "FreeRTOS", icon: <FaMicrochip />, level: 4 },
+      { name: "ESP-NOW", icon: <FaMicrochip />, level: 5 },
+      { name: "PlatformIO", icon: <SiPlatformio />, level: 4 },
+      { name: "MPU6500 IMU", icon: <FaRobot />, level: 4 }
+    ],
+    features: [
+      "A wireless gesture-controlled 4-DOF robot arm using ESP32 microcontrollers, MPU6500 IMU sensing, and ESP-NOW communication with sub-50ms latency.",
+      "Implemented a complementary filter (98% gyroscope, 2% accelerometer) for stable pitch and roll angle fusion from the MPU6500 IMU at 100 Hz.",
+      "Designed an 8-byte control packet protocol transmitted at 50 Hz over ESP-NOW unicast with confirmed delivery, achieving sub-50ms end-to-end latency.",
+      "Built FreeRTOS multi-core task architecture: IMU reading at 100 Hz on Core 1, ESP-NOW TX at 50 Hz on Core 0, with ISR-safe receive buffers on the arm node.",
+      "Mapped roll to base rotation and pitch to shoulder/elbow servo motion, with exponential moving average filtering to smooth servo jitter from sensor noise.",
+      "Implemented a 500ms signal-loss safety timeout that holds the arm at its last known position if communication drops.",
+      "Integrated a debounced push button toggle for gripper open/close control, with state transmitted as part of the control packet.",
+      "Powered the controller node from a USB power bank for full wireless portability."
+    ],
+    githubLink: null,
+    liveLink: null
+  },
+  {
+    id: 12,
+    name: "Secure Healthcare Data Transfer",
+    logo: awsIcon,
+    type: "Cloud Security Architecture",
+    category: "cloud",
+    images: [bloodTestsArch],
+    duration: "2025",
+    description: "A secure cloud architecture for transferring and storing blood test data from laboratories using AWS Lightsail, S3, and automated threat isolation.",
+    technologies: [
+      { name: "AWS Lightsail", icon: awsIcon, level: 5, isImage: true },
+      { name: "Amazon S3", icon: awsIcon, level: 5, isImage: true },
+      { name: "SFTP", icon: <FaLock />, level: 5 },
+      { name: "Python", icon: pythonIcon, level: 4, isImage: true },
+      { name: "Slack API", icon: <FaSlack />, level: 4 },
+      { name: "Bash", icon: cIcon, level: 4, isImage: true }
+    ],
+    features: [
+      "Designed a secure cloud architecture for transferring blood test data from laboratories to AWS, minimizing attack surface exposure.",
+      "Deployed an SFTP server on AWS Lightsail with private key authentication, eliminating password-based vulnerabilities.",
+      "Implemented a two-bucket S3 strategy: a main processing bucket for validated files and an isolation bucket for suspicious content requiring investigation.",
+      "Built staggered cron jobs (primary every minute, secondary offset by 30 seconds) for file detection, format validation, and transfer verification.",
+      "Developed automated file validation that checks JSON format and expected fields, routing deviations to the isolation bucket.",
+      "Integrated Slack alerting for the security team with detailed notifications including file metadata, source lab info, severity level, and specific reasons for suspicion.",
+      "Added server restart protection to ensure no files are lost during interruptions and cron jobs resume in the correct sequence.",
+      "Applied defense-in-depth: rapid S3 transfer to reduce server dwell time, secure deletion only after confirmed transfer, and firewall rules restricted to necessary connections."
+    ],
+    githubLink: null,
+    liveLink: null
+  },
   {
     id: 1,
     name: "Portfolio Cloud Architecture",
