@@ -1,2 +1,2 @@
-# SPA fallback - serves index.html only when file doesn't exist
-/*  /index.html  200!
+# Amplify rewrite rules are configured in the Amplify console.
+# This file is kept for documentation purposes only.
