@@ -7,6 +7,8 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    color-scheme: ${({ theme }) => theme.mode};
   }
 
   body {
@@ -15,46 +17,65 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     font-family: ${({ theme }) => theme.fonts.main};
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    line-height: 1.6;
+    transition: background-color 0.2s ease, color 0.2s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4 {
-    color: ${({ theme }) => theme.colors.primary};
-    margin-bottom: 20px;
-    font-weight: 700;
+    color: ${({ theme }) => theme.colors.text};
+    margin: 0 0 ${({ theme }) => theme.space.md};
+    font-weight: 600;
     line-height: 1.2;
+    letter-spacing: -0.02em;
   }
 
   p, li {
-    font-size: 1.1em;
+    font-size: ${({ theme }) => theme.fontSizes.base};
     line-height: 1.7;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.muted};
   }
 
   a {
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.15s ease, opacity 0.15s ease;
   }
 
   a:hover {
-    color: ${({ theme }) => theme.colors.accent};
+    opacity: 0.8;
+  }
+
+  ::selection {
+    background: ${({ theme }) => theme.colors.primary}33;
+  }
+
+  :focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   section {
-    padding: 100px 20px;
+    padding: ${({ theme }) => theme.space.section} ${({ theme }) => theme.layout.gutter};
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   @media (max-width: 768px) {
-    h1 { font-size: 2.5em; }
-    h2 { font-size: 2em; }
-    body { padding-top: 70px; }
-    section { padding: 60px 20px; }
+    section { padding: 64px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 `;
 
