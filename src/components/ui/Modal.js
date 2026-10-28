@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 
 const Overlay = styled(motion.div)`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(5px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -19,15 +16,15 @@ const Overlay = styled(motion.div)`
 `;
 
 const ModalContainer = styled(motion.div)`
-  background: ${({ theme }) => theme.colors.background};
-  border: 1px solid ${({ theme }) => theme.colors.primary}30;
-  border-radius: 16px;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.lg};
   width: 100%;
-  max-width: 900px;
+  max-width: ${({ $maxWidth }) => $maxWidth};
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -38,35 +35,36 @@ const ModalContainer = styled(motion.div)`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.primary}40;
+    background: ${({ theme }) => theme.colors.border};
     border-radius: 4px;
   }
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.5);
-  border: none;
-  color: white;
-  width: 40px;
-  height: 40px;
+  top: 16px;
+  right: 16px;
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.text};
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.3s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-    transform: rotate(90deg);
+    background: ${({ theme }) => theme.colors.surfaceHover};
   }
 `;
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children, label = 'Dialog', maxWidth = '900px', hideClose = false }) => {
+    const closeRef = useRef(null);
+
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -74,6 +72,7 @@ const Modal = ({ isOpen, onClose, children }) => {
                 if (e.key === 'Escape') onClose();
             };
             document.addEventListener('keydown', handleEscape);
+            closeRef.current?.focus();
             return () => {
                 document.body.style.overflow = 'unset';
                 document.removeEventListener('keydown', handleEscape);
@@ -90,17 +89,25 @@ const Modal = ({ isOpen, onClose, children }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
                     onClick={onClose}
                 >
                     <ModalContainer
-                        initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label={label}
+                        $maxWidth={maxWidth}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 12 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <CloseButton onClick={onClose}>
-                            <FaTimes />
-                        </CloseButton>
+                        {!hideClose && (
+                            <CloseButton ref={closeRef} onClick={onClose} aria-label="Close">
+                                <FaTimes />
+                            </CloseButton>
+                        )}
                         {children}
                     </ModalContainer>
                 </Overlay>

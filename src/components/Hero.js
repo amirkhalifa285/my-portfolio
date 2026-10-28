@@ -146,7 +146,7 @@ function Hero() {
             transition={{ delay: 0.4 }}
           >
             <Button as="a" href="#projects">Check out my work</Button>
-            <Button as="a" href="#contact" variant="outline">Contact Me</Button>
+            <Button as="a" href="#contact" $variant="secondary">Contact Me</Button>
           </ButtonGroup>
         </HeroContent>
 

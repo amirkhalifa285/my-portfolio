@@ -1,36 +1,74 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 
+// Variants: 'primary' (default), 'secondary' (bordered), 'ghost' (text only)
+const variants = {
+  primary: css`
+    background: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.background};
+    border-color: ${({ theme }) => theme.colors.text};
+
+    &:hover:not(:disabled) {
+      opacity: 0.88;
+    }
+  `,
+  secondary: css`
+    background: transparent;
+    color: ${({ theme }) => theme.colors.text};
+    border-color: ${({ theme }) => theme.colors.border};
+
+    &:hover:not(:disabled) {
+      background: ${({ theme }) => theme.colors.surfaceHover};
+      border-color: ${({ theme }) => theme.colors.subtle};
+    }
+  `,
+  ghost: css`
+    background: transparent;
+    color: ${({ theme }) => theme.colors.muted};
+    border-color: transparent;
+    padding-left: 4px;
+    padding-right: 4px;
+
+    &:hover:not(:disabled) {
+      color: ${({ theme }) => theme.colors.text};
+    }
+  `,
+};
+
 const Button = styled(motion.button)`
-  padding: 12px 24px;
-  background: ${({ theme, variant }) =>
-        variant === 'outline' ? 'transparent' : theme.colors.primary};
-  color: ${({ theme, variant }) =>
-        variant === 'outline' ? theme.colors.primary : theme.colors.background};
-  border: 2px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 1rem;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+
+  ${({ $variant = 'primary' }) => variants[$variant] || variants.primary}
 
   &:hover {
-    background: ${({ theme, variant }) =>
-        variant === 'outline' ? theme.colors.primary : theme.colors.accent};
-    border-color: ${({ theme, variant }) =>
-        variant === 'outline' ? theme.colors.primary : theme.colors.accent};
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px ${({ theme }) => theme.colors.primary}40;
+    opacity: 1;
+  }
+
+  svg {
+    transition: transform 0.15s ease;
+  }
+
+  &:hover:not(:disabled) svg {
+    transform: translateX(2px);
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
   }
 `;
 
