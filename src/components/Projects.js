@@ -200,6 +200,7 @@ const RowButton = styled.button`
   border: none;
   background: none;
   font-family: inherit;
+  font-size: inherit;
   text-align: left;
   color: inherit;
   cursor: pointer;
