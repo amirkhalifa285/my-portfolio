@@ -1,174 +1,173 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { FiArrowRight, FiArrowUpRight, FiGithub, FiLinkedin } from 'react-icons/fi';
 import profilePicture from '../assets/updated_pic-removebg-preview.png';
 import Button from './ui/Button';
+import { Container } from './ui/Section';
+import { profile } from '../data/profile';
 
 const HeroSection = styled.section`
-  display: flex;
+  padding-top: clamp(120px, 18vh, 180px);
+  padding-bottom: ${({ theme }) => theme.space.section};
+`;
+
+const Grid = styled(Container)`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: ${({ theme }) => theme.space['2xl']};
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 0 20px;
-  background: radial-gradient(circle at 50% 50%, ${({ theme }) => theme.colors.primary}10 0%, transparent 50%);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.space.xl};
+  }
 `;
 
-const HeroContainer = styled.div`
-  display: flex;
+const Content = styled(motion.div)`
+  max-width: 640px;
+`;
+
+const Status = styled.p`
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 60px;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
+  gap: 8px;
+  margin: 0 0 ${({ theme }) => theme.space.lg};
+  padding: 4px 12px 4px 10px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.pill};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.muted};
 
-  @media (max-width: 968px) {
-    flex-direction: column-reverse;
-    text-align: center;
-    justify-content: center;
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 3px #22c55e33;
   }
 `;
 
-const HeroContent = styled.div`
-  flex: 1;
-  
-  @media (max-width: 968px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+const Name = styled.h1`
+  font-size: ${({ theme }) => theme.fontSizes.display};
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 0 0 ${({ theme }) => theme.space.lg};
 `;
 
-const Greeting = styled(motion.p)`
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 1.2em;
-  font-weight: 600;
-  margin-bottom: 20px;
-`;
-
-const Title = styled(motion.h1)`
-  font-size: 4em;
-  color: ${({ theme }) => theme.colors.text};
-  margin: 0 0 20px 0;
-  line-height: 1.1;
-
-  span {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  @media (max-width: 768px) {
-    font-size: 3em;
-  }
-`;
-
-const Subtitle = styled(motion.p)`
-  font-size: 1.5em;
-  margin: 0 0 40px 0;
-  color: ${({ theme }) => theme.colors.accent};
-  max-width: 600px;
+const Lead = styled.p`
+  font-size: clamp(1.125rem, 2vw, 1.3rem);
   line-height: 1.6;
+  color: ${({ theme }) => theme.colors.muted};
+  margin: 0 0 ${({ theme }) => theme.space.md};
 
-  @media (max-width: 768px) {
-    font-size: 1.2em;
+  strong {
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 500;
   }
 `;
 
-const ButtonGroup = styled(motion.div)`
-  display: flex;
-  gap: 20px;
+const Meta = styled.p`
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.subtle};
+  margin: 0 0 ${({ theme }) => theme.space.xl};
 `;
 
-const ProfileImageWrapper = styled(motion.div)`
-  flex: 1;
+const Actions = styled.div`
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+`;
+
+const Socials = styled.div`
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+
+  a {
+    display: inline-flex;
+    padding: 8px;
+    color: ${({ theme }) => theme.colors.muted};
+    border-radius: ${({ theme }) => theme.radii.sm};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.text};
+      opacity: 1;
+    }
+  }
+`;
+
+const PhotoFrame = styled(motion.div)`
   position: relative;
-`;
+  aspect-ratio: 4 / 5;
+  border-radius: ${({ theme }) => theme.radii.lg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background:
+    radial-gradient(120% 80% at 50% 0%, ${({ theme }) => theme.colors.surfaceHover} 0%, ${({ theme }) => theme.colors.surface} 70%);
+  overflow: hidden;
 
-const ProfileImage = styled.img`
-  width: 400px;
-  height: auto;
-  max-height: 500px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px ${({ theme }) => theme.colors.primary}40);
-  z-index: 2;
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: auto;
+  }
 
-  @media (max-width: 768px) {
-    width: 280px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    order: -1;
+    width: 160px;
   }
 `;
 
-const GlowCircle = styled(motion.div)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  background: ${({ theme }) => theme.colors.primary};
-  opacity: 0.15;
-  filter: blur(60px);
-  border-radius: 50%;
-  z-index: 1;
-`;
+const fadeUp = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: 'easeOut' },
+};
 
 function Hero() {
   return (
     <HeroSection id="hero">
-      <HeroContainer>
-        <HeroContent>
-          <Greeting
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            Hi, my name is
-          </Greeting>
-          <Title
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Amir Khalifa.
-            <br />
-            <span>I build secure and scalable solutions.</span>
-          </Title>
-          <Subtitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            Software Engineering Student specializing in Cybersecurity and Cloud Development.
-          </Subtitle>
-          <ButtonGroup
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Button as="a" href="#projects">Check out my work</Button>
-            <Button as="a" href="#contact" $variant="secondary">Contact Me</Button>
-          </ButtonGroup>
-        </HeroContent>
+      <Grid>
+        <Content {...fadeUp}>
+          <Status>Open to software engineering roles</Status>
+          <Name>{profile.name}</Name>
+          <Lead>
+            Software engineer working where <strong>hardware, networks and software</strong> meet:
+            embedded systems, V2V communication and production infrastructure.
+          </Lead>
+          <Meta>B.Sc. Software Engineering · NOC Team Leader at Aristocrat Interactive</Meta>
+          <Actions>
+            <Button as="a" href="#projects">
+              View work <FiArrowRight size={14} />
+            </Button>
+            <Button as="a" href={profile.resume} target="_blank" rel="noopener noreferrer" $variant="secondary">
+              Resume <FiArrowUpRight size={14} />
+            </Button>
+            <Socials>
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <FiGithub size={18} />
+              </a>
+              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <FiLinkedin size={18} />
+              </a>
+            </Socials>
+          </Actions>
+        </Content>
 
-        <ProfileImageWrapper
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+        <PhotoFrame
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <GlowCircle
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.15, 0.25, 0.15]
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <ProfileImage src={profilePicture} alt="Amir Khalifa" />
-        </ProfileImageWrapper>
-      </HeroContainer>
+          <img src={profilePicture} alt="Amir Khalifa" />
+        </PhotoFrame>
+      </Grid>
     </HeroSection>
   );
 }

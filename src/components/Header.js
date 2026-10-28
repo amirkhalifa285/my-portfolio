@@ -23,7 +23,7 @@ const Nav = styled.nav`
 `;
 
 const Inner = styled.div`
-  max-width: ${({ theme }) => theme.layout.maxWidth};
+  max-width: calc(${({ theme }) => theme.layout.maxWidth} + 2 * ${({ theme }) => theme.layout.gutter});
   margin: 0 auto;
   height: 64px;
   padding: 0 ${({ theme }) => theme.layout.gutter};
