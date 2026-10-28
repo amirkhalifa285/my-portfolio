@@ -54,26 +54,24 @@ const FACTS = [
   ['Based in', profile.location],
   ['Education', 'B.Sc. Software Engineering, Shenkar (2026)'],
   ['Currently', 'NOC Team Leader, Aristocrat Interactive'],
-  ['Focus', 'Embedded · V2V · ML · Infrastructure'],
   ['Languages', 'English, Hebrew, Arabic, Russian'],
 ];
 
 function About() {
   return (
     <Section id="about">
-      <SectionHeader eyebrow="About" title="Systems you can touch" />
+      <SectionHeader eyebrow="About" title="About me" />
       <Grid>
         <Body>
           <p>
-            I'm a software engineer who likes working close to the hardware and the network.
-            My most recent project, <strong>SafeRide</strong>, is a V2V collision-avoidance system:
-            ESP32 nodes on real vehicles, Dockerized SUMO simulation with an ESP-NOW emulator,
-            and a PPO braking agent deployed back on the ESP32.
+            I'm a software engineering graduate who's spent the last two years keeping production
+            systems running, and building software along the way. At <strong>Aristocrat Interactive</strong> I
+            lead a NOC team and write the tools we rely on: an incident/Jira ticket generator, a
+            production health dashboard and task automation in Python and Bash.
           </p>
           <p>
-            By day I lead a NOC team at <strong>Aristocrat Interactive</strong>, keeping regulated
-            production platforms healthy with Datadog, Coralogix and a lot of Linux, and automating
-            whatever the team does twice.
+            Outside work I build projects end to end. The most recent is <strong>SafeRide</strong>,
+            a collision-avoidance system running on real vehicles.
           </p>
           <p>I run Arch, by the way.</p>
         </Body>

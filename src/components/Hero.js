@@ -138,8 +138,8 @@ function Hero() {
           <Status>Open to software engineering roles</Status>
           <Name>{profile.name}</Name>
           <Lead>
-            Software engineer working where <strong>hardware, networks and software</strong> meet:
-            embedded systems, V2V communication and production infrastructure.
+            Software engineer with <strong>2+ years running production systems</strong>. I build
+            reliable software, from backend services and tooling to the projects below.
           </Lead>
           <Meta>B.Sc. Software Engineering · NOC Team Leader at Aristocrat Interactive</Meta>
           <Actions>
