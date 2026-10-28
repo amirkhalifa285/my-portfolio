@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { FiArrowUpRight, FiAward } from 'react-icons/fi';
+import styled, { keyframes } from 'styled-components';
+import { FiArrowUpRight, FiAward, FiBookOpen } from 'react-icons/fi';
 import Modal from './ui/Modal';
 
 const certificates = [
@@ -11,10 +11,20 @@ const certificates = [
     date: 'Dec 2025',
     pdfPath: '/docker-foundations-certificate.pdf',
   },
-  // Add more certificates here as you acquire them
+  {
+    id: 2,
+    name: 'AWS Certified DevOps Engineer – Professional',
+    issuer: 'Amazon Web Services',
+    inProgress: true,
+  },
+  // Add more certificates here as you acquire them.
+  // When an in-progress one is earned: remove `inProgress`, add `date` and `pdfPath`.
 ];
 
 const List = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -34,6 +44,7 @@ const CertButton = styled.button`
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   font-family: inherit;
+  font-size: inherit;
   text-align: left;
   color: inherit;
   cursor: pointer;
@@ -62,6 +73,65 @@ const Info = styled.span`
   span {
     font-size: ${({ theme }) => theme.fontSizes.sm};
     color: ${({ theme }) => theme.colors.subtle};
+  }
+`;
+
+const pulse = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+`;
+
+const sweep = keyframes`
+  from { transform: translateX(-100%); }
+  to { transform: translateX(350%); }
+`;
+
+const PendingCard = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px dashed ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  overflow: hidden;
+
+  > svg:first-child {
+    flex-shrink: 0;
+    color: ${({ theme }) => theme.colors.subtle};
+  }
+
+  /* Indeterminate activity line along the bottom edge */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.primary}, transparent);
+    animation: ${sweep} 2.4s ease-in-out infinite;
+  }
+`;
+
+const StatusPill = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.muted};
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.colors.primary};
+    animation: ${pulse} 1.6s ease-in-out infinite;
   }
 `;
 
@@ -104,14 +174,25 @@ function Certificates() {
       <List>
         {certificates.map((cert) => (
           <Item key={cert.id}>
-            <CertButton onClick={() => setSelected(cert)}>
-              <FiAward size={20} />
-              <Info>
-                <strong>{cert.name}</strong>
-                <span>{cert.issuer} · {cert.date}</span>
-              </Info>
-              <FiArrowUpRight />
-            </CertButton>
+            {cert.inProgress ? (
+              <PendingCard>
+                <FiBookOpen size={20} />
+                <Info>
+                  <strong>{cert.name}</strong>
+                  <span>{cert.issuer}</span>
+                </Info>
+                <StatusPill>Studying</StatusPill>
+              </PendingCard>
+            ) : (
+              <CertButton onClick={() => setSelected(cert)}>
+                <FiAward size={20} />
+                <Info>
+                  <strong>{cert.name}</strong>
+                  <span>{cert.issuer} · {cert.date}</span>
+                </Info>
+                <FiArrowUpRight />
+              </CertButton>
+            )}
           </Item>
         ))}
       </List>
