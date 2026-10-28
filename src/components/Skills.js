@@ -1,123 +1,74 @@
 import React from 'react';
 import styled from 'styled-components';
+import Section from './ui/Section';
+import SectionHeader from './ui/SectionHeader';
+import Tag, { TagList } from './ui/Tag';
+import Certificates from './Certificates';
 
-const SkillsSection = styled.section`
-  padding: 80px 20px;
-  color: ${({ theme }) => theme.colors.background};
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const skillGroups = [
+  { label: 'Languages', items: ['Python', 'C/C++', 'JavaScript/TypeScript', 'Bash', 'PowerShell', 'SQL'] },
+  { label: 'Embedded & IoT', items: ['ESP32', 'ESP-NOW', 'FreeRTOS', 'PlatformIO', 'IMU/GPS sensor fusion'] },
+  { label: 'ML & Simulation', items: ['Reinforcement Learning (PPO)', 'TensorFlow Lite', 'SUMO'] },
+  { label: 'Backend & Data', items: ['FastAPI', 'Node.js/Express', 'REST APIs', 'PostgreSQL', 'MySQL', 'MongoDB', 'SQLite', 'Supabase'] },
+  { label: 'Frontend', items: ['React', 'HTML', 'CSS'] },
+  { label: 'Cloud & DevOps', items: ['AWS', 'Docker', 'GitHub Actions', 'Git', 'Linux (Ubuntu, Debian, RHEL, Arch)', 'pytest'] },
+  { label: 'Monitoring & Ops', items: ['Datadog', 'Coralogix', 'Logz.io', 'OpsGenie', 'Azure DevOps', 'Jira', 'Confluence'] },
+  { label: 'Security & Networking', items: ['TCP/IP, HTTP', 'Wireshark', 'Scapy', 'Kali Linux', 'Burp Suite', 'Web Security (XSS, CSRF, SQLi)'] },
+];
+
+const Groups = styled.dl`
+  margin: 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-const SkillsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 40px;
-`;
+const Group = styled.div`
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: ${({ theme }) => theme.space.xl};
+  padding: ${({ theme }) => theme.space.md} 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
-const SkillCategory = styled.div`
-  background-color: ${({ theme }) => theme.colors.background}; /* Dynamic background */
-  border-radius: 8px;
-  padding: 20px;
-  width: 250px;
-  box-shadow: 0 4px 6px ${({ theme }) => theme.colors.primary}20;
-
-  h3 {
-    color: ${({ theme }) => theme.colors.primary}; /* Dynamic primary color */
-    margin-bottom: 15px;
-    text-align: center;
-    transition: color 0.3s ease; /* Smooth transition for theme toggle */
+  dt {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    color: ${({ theme }) => theme.colors.text};
+    padding-top: 2px;
   }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-
-    li {
-      margin-bottom: 10px;
-      line-height: 1.6;
-      color: ${({ theme }) => theme.colors.text}; /* Dynamic text color */
-      text-align: center;
-      transition: color 0.3s ease; /* Smooth transition for text color */
-    }
+  dd {
+    margin: 0;
   }
 
-  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth background transition */
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.space.sm};
+  }
 `;
 
+const SubHeading = styled.h3`
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  margin: ${({ theme }) => theme.space['2xl']} 0 ${({ theme }) => theme.space.md};
+`;
 
 function Skills() {
   return (
-    <SkillsSection id="skills">
-      <h2>Skills</h2>
-      <SkillsContainer>
-        <SkillCategory>
-          <h3>Languages</h3>
-          <ul>
-            <li>Python</li>
-            <li>JavaScript/TypeScript</li>
-            <li>C/C++</li>
-            <li>Bash</li>
-          </ul>
-        </SkillCategory>
+    <Section id="skills">
+      <SectionHeader eyebrow="Skills" title="Tools I work with" />
+      <Groups>
+        {skillGroups.map((group) => (
+          <Group key={group.label}>
+            <dt>{group.label}</dt>
+            <dd>
+              <TagList>
+                {group.items.map((item) => <Tag key={item}>{item}</Tag>)}
+              </TagList>
+            </dd>
+          </Group>
+        ))}
+      </Groups>
 
-        <SkillCategory>
-          <h3>Backend & APIs</h3>
-          <ul>
-            <li>FastAPI</li>
-            <li>Node.js/Express</li>
-            <li>REST APIs</li>
-            <li>PostgreSQL</li>
-            <li>MySQL</li>
-            <li>MongoDB</li>
-            <li>Supabase</li>
-          </ul>
-        </SkillCategory>
-
-        <SkillCategory>
-          <h3>Frontend</h3>
-          <ul>
-            <li>React</li>
-            <li>HTML</li>
-            <li>CSS</li>
-          </ul>
-        </SkillCategory>
-
-        <SkillCategory>
-          <h3>Cloud, DevOps & Monitoring</h3>
-          <ul>
-            <li>AWS</li>
-            <li>Docker</li>
-            <li>Linux (Ubuntu, Debian, RHEL)</li>
-            <li>Datadog</li>
-            <li>Coralogix</li>
-            <li>Logz.io</li>
-            <li>OpsGenie</li>
-            <li>Azure DevOps</li>
-            <li>Jira</li>
-            <li>Confluence</li>
-            <li>Git</li>
-          </ul>
-        </SkillCategory>
-
-        <SkillCategory>
-          <h3>Security & Networking</h3>
-          <ul>
-            <li>TCP/IP, HTTP</li>
-            <li>Wireshark</li>
-            <li>Kali Linux</li>
-            <li>Burp Suite (Community)</li>
-            <li>Scapy</li>
-            <li>Web Security (XSS, CSRF, SQL Injection)</li>
-            <li>Basic Cryptography</li>
-            <li>Secure Coding Concepts</li>
-          </ul>
-        </SkillCategory>
-      </SkillsContainer>
-    </SkillsSection>
+      <SubHeading id="certificates">Certifications</SubHeading>
+      <Certificates />
+    </Section>
   );
 }
 
