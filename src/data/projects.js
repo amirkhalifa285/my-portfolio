@@ -62,6 +62,7 @@ export const projects = [
   {
     id: 10,
     name: "SafeRide",
+    featured: true,
     logo: safeRideLogo,
     type: "V2V Collision Avoidance System",
     category: "systems",
@@ -105,6 +106,7 @@ export const projects = [
   {
     id: 11,
     name: "RoboArm",
+    featured: true,
     logo: cIcon,
     type: "Gesture-Controlled Wireless Robot Arm",
     category: "systems",
@@ -216,6 +218,7 @@ export const projects = [
   {
     id: 3,
     name: "VLANG Compiler",
+    featured: true,
     logo: vlangLogo,
     type: "Systems Programming",
     category: "systems",

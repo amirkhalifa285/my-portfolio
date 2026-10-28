@@ -1,460 +1,528 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight, FaExpand, FaPlay } from 'react-icons/fa';
+import { FiArrowUpRight, FiChevronLeft, FiChevronRight, FiGithub, FiPlay, FiFileText } from 'react-icons/fi';
 import { projects } from '../data/projects';
-import Card from './ui/Card';
+import Section from './ui/Section';
+import SectionHeader, { Eyebrow } from './ui/SectionHeader';
 import Modal from './ui/Modal';
-
-const ProjectsSection = styled.section`
-  padding: 100px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const Title = styled(motion.h2)`
-  font-size: 3em;
-  margin-bottom: 40px;
-  text-align: center;
-  background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.accent});
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-`;
+import Tag, { TagList } from './ui/Tag';
 
 const categories = [
   { id: 'all', label: 'All' },
   { id: 'fullstack', label: 'Full-Stack' },
   { id: 'cloud', label: 'Cloud' },
-  { id: 'cybersecurity', label: 'Cybersecurity' },
-  { id: 'systems', label: 'Systems Programming' },
-  { id: 'design', label: 'Design' }
+  { id: 'cybersecurity', label: 'Security' },
+  { id: 'systems', label: 'Systems' },
+  { id: 'design', label: 'Design' },
 ];
 
-const CategoryTabs = styled.div`
+const summaryOf = (project) => project.description || project.features[0];
+
+const linksOf = (project) => [
+  project.githubLink && { href: project.githubLink, label: project.githubLinkBackend ? 'Frontend' : 'Code', icon: <FiGithub size={14} /> },
+  project.githubLinkBackend && { href: project.githubLinkBackend, label: 'Backend', icon: <FiGithub size={14} /> },
+  project.docsLink && { href: project.docsLink, label: 'Docs', icon: <FiFileText size={14} /> },
+  project.liveLink && { href: project.liveLink, label: 'Live', icon: <FiArrowUpRight size={14} /> },
+].filter(Boolean);
+
+const mediaOf = (project) => [
+  ...(project.video ? [{ type: 'video', src: project.video }] : []),
+  ...project.images.map((src) => ({ type: 'image', src })),
+];
+
+/* ---------- Featured ---------- */
+
+const Featured = styled.div`
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 50px;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.space['2xl']};
+  margin-bottom: ${({ theme }) => theme.space['2xl']};
 `;
 
-const CategoryTab = styled.button`
-  padding: 10px 24px;
-  border-radius: 30px;
-  border: 2px solid ${({ theme, $active }) => $active ? theme.colors.primary : theme.colors.cardBorder};
-  background: ${({ theme, $active }) => $active
-    ? `linear-gradient(135deg, ${theme.colors.primary}20, ${theme.colors.accent}20)`
-    : 'transparent'};
-  color: ${({ theme, $active }) => $active ? theme.colors.primary : theme.colors.text};
-  font-weight: 600;
-  font-size: 0.95em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => `${theme.colors.primary}10`};
-    transform: translateY(-2px);
+const FeaturedItem = styled.article`
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: ${({ theme }) => theme.space.xl};
+  align-items: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.space.lg};
   }
 `;
 
-const ProjectGrid = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 40px;
-`;
-
-const ProjectImage = styled.div`
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
+const Cover = styled.button`
   position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  background: ${({ theme }) => theme.colors.surface};
+  overflow: hidden;
   cursor: pointer;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.4s ease;
   }
 
   &:hover img {
-    transform: scale(1.1);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::after {
-    opacity: 1;
+    transform: scale(1.02);
   }
 `;
 
-const ProjectHeader = styled.div`
-  display: flex;
+const CoverBadge = styled.span`
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
 `;
 
-const Logo = styled.img`
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  background: white;
-  padding: 5px;
-  border-radius: 8px;
+const ProjectName = styled.h3`
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
+  margin: 0 0 4px;
 `;
 
-const ProjectTitle = styled.h3`
-  font-size: 1.5em;
-  margin: 0;
+const ProjectMeta = styled.p`
+  margin: 0 0 ${({ theme }) => theme.space.md};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.subtle};
+`;
+
+const Summary = styled.p`
+  margin: 0 0 ${({ theme }) => theme.space.md};
+`;
+
+const LinkRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: ${({ theme }) => theme.space.md};
+  margin-top: ${({ theme }) => theme.space.lg};
+`;
+
+const TextLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: 500;
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const Tags = styled.div`
+const TextButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+/* ---------- Archive ---------- */
+
+const ArchiveHeader = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.space.md};
+  margin-bottom: ${({ theme }) => theme.space.md};
 `;
 
-const Tag = styled.span`
-  background: ${({ theme }) => theme.colors.primary}15;
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: 600;
+const ArchiveTitle = styled.h3`
+  font-size: ${({ theme }) => theme.fontSizes.xl};
+  margin: 0;
 `;
 
-const Description = styled.p`
-  color: ${({ theme }) => theme.colors.accent};
-  margin-bottom: 20px;
-  line-height: 1.6;
+const Filters = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 `;
 
-const ExpandButton = styled.button`
-  background: none;
+const Filter = styled.button`
+  padding: 4px 10px;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  border: 1px solid ${({ theme, $active }) => ($active ? theme.colors.text : theme.colors.border)};
+  background: ${({ theme, $active }) => ($active ? theme.colors.text : 'transparent')};
+  color: ${({ theme, $active }) => ($active ? theme.colors.background : theme.colors.muted)};
+  font-family: inherit;
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: ${({ theme, $active }) => ($active ? theme.colors.background : theme.colors.text)};
+  }
+`;
+
+const Archive = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const Row = styled.li`
+  margin: 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const RowButton = styled.button`
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto auto;
+  gap: ${({ theme }) => theme.space.lg};
+  align-items: center;
+  width: 100%;
+  padding: 18px 8px;
   border: none;
-  color: ${({ theme }) => theme.colors.primary};
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceHover};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 16px;
+  }
+`;
+
+const RowName = styled.span`
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.text};
+
+  small {
+    display: block;
+    margin-top: 2px;
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.subtle};
+  }
+`;
+
+const RowTags = styled(TagList)`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const RowYear = styled.span`
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  color: ${({ theme }) => theme.colors.subtle};
+  white-space: nowrap;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const RowArrow = styled(FiArrowUpRight)`
+  color: ${({ theme }) => theme.colors.subtle};
+`;
+
+/* ---------- Detail modal ---------- */
+
+const Stage = styled.div`
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+
+  img,
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`;
+
+const StageNav = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  ${({ $side }) => ($side === 'prev' ? 'left: 12px;' : 'right: 12px;')}
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
   cursor: pointer;
-  font-weight: 600;
-  padding: 0;
-  
+  z-index: 2;
+
   &:hover {
-    text-decoration: underline;
+    background: rgba(0, 0, 0, 0.85);
   }
 `;
 
-const Details = styled(motion.div)`
-  overflow: hidden;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
+const Counter = styled.span`
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 2px 8px;
+  border-radius: ${({ theme }) => theme.radii.pill};
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-family: ${({ theme }) => theme.fonts.mono};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
 `;
 
-const FeatureList = styled.ul`
-  padding-left: 20px;
-  margin-bottom: 20px;
-  
-  li {
-    margin-bottom: 8px;
-    color: ${({ theme }) => theme.colors.text};
-  }
-`;
-
-const Links = styled.div`
+const Thumbs = styled.div`
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
-
-  a {
-    color: ${({ theme }) => theme.colors.primary};
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  gap: 8px;
+  padding: 12px ${({ theme }) => theme.space.lg} 0;
+  overflow-x: auto;
 `;
 
-// Modal Styles
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-`;
-
-const ModalImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 500px;
-  background: #000;
-  border-radius: 12px;
+const Thumb = styled.button`
+  flex: 0 0 72px;
+  height: 48px;
+  padding: 0;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  border: 2px solid ${({ theme, $active }) => ($active ? theme.colors.primary : 'transparent')};
+  background: ${({ theme }) => theme.colors.surfaceHover};
   overflow: hidden;
+  cursor: pointer;
+  opacity: ${({ $active }) => ($active ? 1 : 0.6)};
+  color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
   justify-content: center;
 
   img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-`;
-
-const NavButton = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
-  color: white;
-  border: none;
-  padding: 15px;
-  cursor: pointer;
-  font-size: 1.5em;
-  transition: background 0.3s;
-  z-index: 2;
 
   &:hover {
-    background: rgba(0,0,0,0.8);
+    opacity: 1;
+  }
+`;
+
+const DetailBody = styled.div`
+  padding: ${({ theme }) => theme.space.lg};
+
+  h4 {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    margin: ${({ theme }) => theme.space.lg} 0 ${({ theme }) => theme.space.sm};
   }
 
-  &.prev { left: 10px; }
-  &.next { right: 10px; }
+  ul.features {
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  ul.features li {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+    margin-bottom: 6px;
+  }
 `;
 
-const VideoBadge = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(0,0,0,0.7);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.8em;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  z-index: 1;
-`;
+function ProjectDetail({ project }) {
+  const media = mediaOf(project);
+  const [index, setIndex] = useState(0);
+  const current = media[index];
 
-const ModalVideo = styled.video`
-  width: 100%;
-  max-height: 500px;
-  border-radius: 12px;
-  background: #000;
-`;
+  const step = useCallback(
+    (delta) => setIndex((i) => (i + delta + media.length) % media.length),
+    [media.length]
+  );
 
-function Projects() {
-  const [expandedId, setExpandedId] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeCategory, setActiveCategory] = useState('all');
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [step]);
 
-  const filteredProjects = activeCategory === 'all'
-    ? projects
-    : projects.filter(p => p.category === activeCategory);
-
-  const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id);
-  };
-
-  const openModal = (project) => {
-    setSelectedProject(project);
-    setCurrentImageIndex(0);
-    setModalOpen(true);
-  };
-
-  const getMediaCount = (project) => {
-    return (project.video ? 1 : 0) + project.images.length;
-  };
-
-  const isVideoSlide = (project, index) => {
-    return project.video && index === 0;
-  };
-
-  const getImageForSlide = (project, index) => {
-    const imageIndex = project.video ? index - 1 : index;
-    return project.images[imageIndex];
-  };
-
-  const nextImage = (e) => {
-    e.stopPropagation();
-    if (selectedProject) {
-      const total = getMediaCount(selectedProject);
-      setCurrentImageIndex((prev) => (prev + 1) % total);
-    }
-  };
-
-  const prevImage = (e) => {
-    e.stopPropagation();
-    if (selectedProject) {
-      const total = getMediaCount(selectedProject);
-      setCurrentImageIndex((prev) => (prev - 1 + total) % total);
-    }
-  };
+  const summary = summaryOf(project);
+  const features = project.features.filter((f) => f !== summary);
+  const links = linksOf(project);
 
   return (
-    <ProjectsSection id="projects">
-      <Title
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        Featured Projects
-      </Title>
-
-      <CategoryTabs>
-        {categories.map((cat) => (
-          <CategoryTab
-            key={cat.id}
-            $active={activeCategory === cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-          >
-            {cat.label}
-          </CategoryTab>
-        ))}
-      </CategoryTabs>
-
-      <ProjectGrid layout>
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project, index) => (
-            <Card
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-            >
-              <ProjectImage onClick={() => openModal(project)}>
-                <img src={project.images[0]} alt={project.name} />
-                {project.video && (
-                  <VideoBadge><FaPlay /> Demo Video</VideoBadge>
-                )}
-                <div style={{ position: 'absolute', bottom: 10, right: 10, color: 'white', zIndex: 1 }}>
-                  <FaExpand />
-                </div>
-              </ProjectImage>
-
-              <ProjectHeader>
-                <Logo src={project.logo} alt="logo" />
-                <div>
-                  <ProjectTitle>{project.name}</ProjectTitle>
-                  <div style={{ fontSize: '0.9em', color: '#8892b0' }}>{project.type}</div>
-                </div>
-              </ProjectHeader>
-
-              <Tags>
-                {project.technologies.slice(0, 3).map((tech, i) => (
-                  <Tag key={i}>{tech.name}</Tag>
-                ))}
-                {project.technologies.length > 3 && <Tag>+{project.technologies.length - 3}</Tag>}
-              </Tags>
-
-              <Description>
-                {project.features[0]}
-              </Description>
-
-              <ExpandButton onClick={() => toggleExpand(project.id)}>
-                {expandedId === project.id ? (
-                  <>Less Details <FaChevronUp /></>
-                ) : (
-                  <>More Details <FaChevronDown /></>
-                )}
-              </ExpandButton>
-
-              <AnimatePresence>
-                {expandedId === project.id && (
-                  <Details
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                  >
-                    <FeatureList>
-                      {project.features.map((feature, i) => (
-                        <li key={i}>{feature}</li>
-                      ))}
-                    </FeatureList>
-
-                    <Links>
-                      {project.githubLink && (
-                        <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
-                          GitHub Repo
-                        </a>
-                      )}
-                      {project.docsLink && (
-                        <a href={project.docsLink} target="_blank" rel="noopener noreferrer">
-                          Documentation
-                        </a>
-                      )}
-                      {project.liveLink && (
-                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                          Live Demo
-                        </a>
-                      )}
-                    </Links>
-                  </Details>
-                )}
-              </AnimatePresence>
-            </Card>
-          ))}
-        </AnimatePresence>
-      </ProjectGrid>
-
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        {selectedProject && (
-          <ModalContent>
-            {isVideoSlide(selectedProject, currentImageIndex) ? (
-              <ModalVideo controls autoPlay>
-                <source src={selectedProject.video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </ModalVideo>
-            ) : (
-              <ModalImageContainer>
-                {getMediaCount(selectedProject) > 1 && (
-                  <>
-                    <NavButton className="prev" onClick={prevImage}><FaChevronLeft /></NavButton>
-                    <NavButton className="next" onClick={nextImage}><FaChevronRight /></NavButton>
-                  </>
-                )}
-                <img
-                  src={getImageForSlide(selectedProject, currentImageIndex)}
-                  alt={`${selectedProject.name} screenshot`}
-                />
-              </ModalImageContainer>
-            )}
-            {getMediaCount(selectedProject) > 1 && isVideoSlide(selectedProject, currentImageIndex) && (
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
-                <NavButton className="prev" onClick={prevImage} style={{ position: 'static', transform: 'none', borderRadius: '50%' }}><FaChevronLeft /></NavButton>
-                <NavButton className="next" onClick={nextImage} style={{ position: 'static', transform: 'none', borderRadius: '50%' }}><FaChevronRight /></NavButton>
-              </div>
-            )}
-            <div style={{ textAlign: 'center' }}>
-              <h3>{selectedProject.name} Gallery</h3>
-              <p>{currentImageIndex + 1} / {getMediaCount(selectedProject)}</p>
-            </div>
-          </ModalContent>
+    <>
+      <Stage>
+        {current.type === 'video' ? (
+          <video key={current.src} controls autoPlay playsInline>
+            <source src={current.src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img src={current.src} alt={`${project.name} screenshot ${index + 1}`} />
         )}
+        {media.length > 1 && (
+          <>
+            <StageNav $side="prev" onClick={() => step(-1)} aria-label="Previous"><FiChevronLeft /></StageNav>
+            <StageNav $side="next" onClick={() => step(1)} aria-label="Next"><FiChevronRight /></StageNav>
+            <Counter>{index + 1} / {media.length}</Counter>
+          </>
+        )}
+      </Stage>
+      {media.length > 1 && (
+        <Thumbs>
+          {media.map((m, i) => (
+            <Thumb key={m.src} $active={i === index} onClick={() => setIndex(i)} aria-label={`Show item ${i + 1}`}>
+              {m.type === 'video' ? <FiPlay /> : <img src={m.src} alt="" />}
+            </Thumb>
+          ))}
+        </Thumbs>
+      )}
+      <DetailBody>
+        <ProjectName>{project.name}</ProjectName>
+        <ProjectMeta>{project.type} · {project.duration}</ProjectMeta>
+        <Summary>{summary}</Summary>
+        {links.length > 0 && (
+          <LinkRow style={{ marginTop: 0 }}>
+            {links.map((l) => (
+              <TextLink key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
+                {l.icon} {l.label}
+              </TextLink>
+            ))}
+          </LinkRow>
+        )}
+        {features.length > 0 && (
+          <>
+            <h4>Highlights</h4>
+            <ul className="features">
+              {features.map((f) => <li key={f}>{f}</li>)}
+            </ul>
+          </>
+        )}
+        <h4>Stack</h4>
+        <TagList>
+          {project.technologies.map((t) => <Tag key={t.name}>{t.name}</Tag>)}
+        </TagList>
+      </DetailBody>
+    </>
+  );
+}
+
+function Projects() {
+  const [selected, setSelected] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const close = useCallback(() => setSelected(null), []);
+
+  const featured = projects.filter((p) => p.featured);
+  const rest = projects.filter((p) => !p.featured);
+  const visibleCategories = categories.filter(
+    (c) => c.id === 'all' || rest.some((p) => p.category === c.id)
+  );
+  const archive = activeCategory === 'all' ? rest : rest.filter((p) => p.category === activeCategory);
+
+  return (
+    <Section id="projects">
+      <SectionHeader
+        eyebrow="Work"
+        title="Selected projects"
+        description="Embedded systems, compilers, cloud and security, from ESP32 firmware to serverless backends."
+      />
+
+      <Featured>
+        {featured.map((project) => (
+          <FeaturedItem key={project.id}>
+            <Cover onClick={() => setSelected(project)} aria-label={`Open ${project.name} gallery`}>
+              <img src={project.images[0]} alt="" loading="lazy" />
+              {project.video && <CoverBadge><FiPlay size={12} /> Watch demo</CoverBadge>}
+            </Cover>
+            <div>
+              <Eyebrow>{project.duration}</Eyebrow>
+              <ProjectName>{project.name}</ProjectName>
+              <ProjectMeta>{project.type}</ProjectMeta>
+              <Summary>{summaryOf(project)}</Summary>
+              <TagList>
+                {project.technologies.slice(0, 6).map((t) => <Tag key={t.name}>{t.name}</Tag>)}
+              </TagList>
+              <LinkRow>
+                <TextButton onClick={() => setSelected(project)}>
+                  Details <FiChevronRight size={14} />
+                </TextButton>
+                {linksOf(project).map((l) => (
+                  <TextLink key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
+                    {l.icon} {l.label}
+                  </TextLink>
+                ))}
+              </LinkRow>
+            </div>
+          </FeaturedItem>
+        ))}
+      </Featured>
+
+      <ArchiveHeader>
+        <ArchiveTitle>More projects</ArchiveTitle>
+        <Filters role="group" aria-label="Filter projects">
+          {visibleCategories.map((cat) => (
+            <Filter
+              key={cat.id}
+              $active={activeCategory === cat.id}
+              aria-pressed={activeCategory === cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+            >
+              {cat.label}
+            </Filter>
+          ))}
+        </Filters>
+      </ArchiveHeader>
+
+      <Archive>
+        {archive.map((project) => (
+          <Row key={project.id}>
+            <RowButton onClick={() => setSelected(project)}>
+              <RowName>
+                {project.name}
+                <small>{project.type}</small>
+              </RowName>
+              <RowTags>
+                {project.technologies.slice(0, 3).map((t) => <Tag key={t.name}>{t.name}</Tag>)}
+              </RowTags>
+              <RowYear>{project.duration}</RowYear>
+              <RowArrow aria-hidden="true" />
+            </RowButton>
+          </Row>
+        ))}
+      </Archive>
+
+      <Modal isOpen={!!selected} onClose={close} label={selected ? `${selected.name} details` : 'Project details'}>
+        {selected && <ProjectDetail key={selected.id} project={selected} />}
       </Modal>
-    </ProjectsSection>
+    </Section>
   );
 }
 
