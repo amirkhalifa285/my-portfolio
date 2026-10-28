@@ -1,127 +1,169 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import logo from '../assets/aklogo.jpg';
+import { FiMenu, FiX, FiSun, FiMoon, FiArrowUpRight } from 'react-icons/fi';
+
+const NAV_ITEMS = [
+  { href: '#about', label: 'About' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#projects', label: 'Work' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#contact', label: 'Contact' },
+];
 
 const Nav = styled.nav`
   position: fixed;
   top: 0;
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  transition: background-color 0.3s ease, color 0.3s ease;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: ${({ theme, $scrolled }) => ($scrolled ? `${theme.colors.background}cc` : 'transparent')};
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'saturate(180%) blur(12px)' : 'none')};
+  border-bottom: 1px solid ${({ theme, $scrolled }) => ($scrolled ? theme.colors.border : 'transparent')};
+  transition: background 0.2s ease, border-color 0.2s ease;
+`;
+
+const Inner = styled.div`
+  max-width: ${({ theme }) => theme.layout.maxWidth};
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 ${({ theme }) => theme.layout.gutter};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  z-index: 100;
+`;
 
-  @media (max-width: 768px) {
-    padding: 10px 20px;
+const Wordmark = styled.a`
+  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes.base};
+  letter-spacing: -0.01em;
+  color: ${({ theme }) => theme.colors.text};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
-const Logo = styled.img`
-  height: 50px;
-  width: auto;
-  cursor: pointer;
-  animation: spin 20s linear infinite;
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const NavLinks = styled.div`
+const Right = styled.div`
   display: flex;
   align-items: center;
+  gap: ${({ theme }) => theme.space.lg};
+`;
 
-  @media (max-width: 768px) {
-    display: ${({ open }) => (open ? 'flex' : 'none')};
-    flex-direction: column;
+const Links = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space.lg};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: ${({ $open }) => ($open ? 'flex' : 'none')};
     position: absolute;
-    top: 70px;
+    top: 64px;
+    left: 0;
     right: 0;
-    background-color: ${({ theme }) => theme.colors.background};
-    width: 100%;
-    text-align: center;
-    padding: 20px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: ${({ theme }) => theme.space.sm} ${({ theme }) => theme.layout.gutter} ${({ theme }) => theme.space.lg};
+    background: ${({ theme }) => theme.colors.background};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   }
 `;
 
 const NavLink = styled.a`
-  color: ${({ theme }) => theme.colors.text};
-  margin: 0 15px;
-  font-size: 1.1em;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.muted};
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.text};
+    opacity: 1;
   }
 
-  @media (max-width: 768px) {
-    margin: 10px 0;
-    font-size: 1.3em;
-  }
-`;
-
-const HamburgerIcon = styled.div`
-  display: none;
-  cursor: pointer;
-
-  @media (max-width: 768px) {
-    display: block;
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 14px 0;
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   }
 `;
 
-const ThemeToggleButton = styled.button`
-  background: ${({ theme }) => theme.colors.primary}; /* Primary theme color */
-  color: ${({ theme }) => theme.colors.background}; /* Contrast text color */
-  border: none;
-  padding: 10px 20px;
-  font-size: 1em;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  display: flex;
+const ResumeLink = styled(NavLink)`
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    border-bottom: none;
+  }
+`;
+
+const IconButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  transition: background 0.15s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.accent}; /* Slight hover effect */
+    background: ${({ theme }) => theme.colors.surfaceHover};
+  }
+`;
+
+const MenuButton = styled(IconButton)`
+  display: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: inline-flex;
   }
 `;
 
 function Header({ toggleTheme, isDarkMode }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const close = () => setMenuOpen(false);
 
   return (
-    <Nav>
-      <a href="#hero">
-        <Logo src={logo} alt="Amir Khalifa Logo" />
-      </a>
-      <HamburgerIcon onClick={() => setMenuOpen(!menuOpen)}>
-        {menuOpen ? <FaTimes size={30} /> : <FaBars size={30} />}
-      </HamburgerIcon>
-      <NavLinks open={menuOpen}>
-        <NavLink href="#hero" onClick={() => setMenuOpen(false)}>Home</NavLink>
-        <NavLink href="#about" onClick={() => setMenuOpen(false)}>About</NavLink>
-        <NavLink href="#certificates" onClick={() => setMenuOpen(false)}>Certificates</NavLink>
-        <NavLink href="#experience" onClick={() => setMenuOpen(false)}>Experience</NavLink>
-        <NavLink href="#projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
-        <NavLink href="#skills" onClick={() => setMenuOpen(false)}>Skills</NavLink>
-        <NavLink href="#contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
-        <ThemeToggleButton onClick={toggleTheme}>
-          {isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode'}
-        </ThemeToggleButton>
-      </NavLinks>
+    <Nav $scrolled={scrolled || menuOpen}>
+      <Inner>
+        <Wordmark href="#hero" onClick={close}>Amir Khalifa</Wordmark>
+        <Right>
+          <Links $open={menuOpen}>
+            {NAV_ITEMS.map(({ href, label }) => (
+              <NavLink key={href} href={href} onClick={close}>{label}</NavLink>
+            ))}
+            <ResumeLink href="/Amir-Khalifa-Resume.pdf" target="_blank" rel="noopener noreferrer" onClick={close}>
+              Resume <FiArrowUpRight size={14} />
+            </ResumeLink>
+          </Links>
+          <IconButton
+            onClick={toggleTheme}
+            aria-label={isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
+            title={isDarkMode ? 'Light theme' : 'Dark theme'}
+          >
+            {isDarkMode ? <FiSun size={16} /> : <FiMoon size={16} />}
+          </IconButton>
+          <MenuButton
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <FiX size={18} /> : <FiMenu size={18} />}
+          </MenuButton>
+        </Right>
+      </Inner>
     </Nav>
   );
 }
